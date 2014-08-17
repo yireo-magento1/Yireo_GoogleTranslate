@@ -141,6 +141,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         // Detect errors and send them as feedback
         if(isset($json['error']['errors'][0]['message'])) {
             $this->apiError = Mage::helper('googletranslate')->__('GoogleTranslate message: %s', var_export($json['error']['errors'][0]['message'], true));
+            $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
             return false;
         }
 
@@ -170,6 +171,6 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
 
     public function __($string, $variable1 = null, $variable2 = null)
     {
-        return Mage::helper('bingtranslate')->__($string, $variable1, $variable2);
+        return Mage::helper('googletranslate')->__($string, $variable1, $variable2);
     }
 }

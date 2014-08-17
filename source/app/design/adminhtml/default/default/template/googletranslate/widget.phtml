@@ -8,13 +8,17 @@
  * @license     Open Software License
  */
 
+$widget_css = null;
+if(Mage::getStoreConfig('catalog/googletranslate/widget_fixed') == 1) {
+    $widget_css = 'position:fixed; bottom:0; width:100%;';
+}
 ?>
-<div class="googletranslate-widget">
-    <div style="heading">
+<div class="googletranslate-widget" style="<?php echo $widget_css; ?>">
+    <div class="heading">
         <strong><?php echo $this->__('GoogleTranslate configuration'); ?>:</strong>
     </div>
 
-    <div style="field">
+    <div class="field">
         <label for="googletranslate_source_language"><?php echo $this->__('Source language'); ?></label>
         <select id="googletranslate_source_language" name="googletranslate_source_language" onchange="return googletranslate_change();">
             <option value="auto"><?php echo $this->__('Automatic'); ?></option>
@@ -25,7 +29,7 @@
         </select>
     </div>
 
-    <div style="field">
+    <div class="field">
         <label for="googletranslate_destination_language"><?php echo $this->__('Destination language'); ?></label>
         <select id="googletranslate_destination_language" name="googletranslate_destination_language" onchange="return googletranslate_change();">
             <option value="auto"><?php echo $this->__('Automatic'); ?></option>
@@ -35,6 +39,12 @@
             <?php endforeach; ?>
         </select>
     </div>
+
+    <!--<div class="field">
+        <button type="button" class="button" onclick="googletranslate_current(); return false;">
+            <span><span><?php echo $this->__('Translate Current Value'); ?></span></span>
+        </button>
+    </div>-->
 </div>
 
 <script type="text/javascript">
@@ -56,9 +66,29 @@ function googletranslate_change() {
         $$('.googletranslate_button').each(function(button) {
             button.down('span').update(label);
             button.className = 'googletranslate_button';
-            //button.removeClassName('disabled');
             button.disabled = false;
         });
     }
 }
+
+/*function googletranslate_current() {
+    jQuery('input').each(function() {
+        element = jQuery('input[name="' + this.name + '"]');
+        focus = element.focused;
+        if(focus == true) {
+            console.log('Focus: ' + element.name);
+        }
+    });
+}
+    
+jQuery(document).ready(function() {
+    jQuery('input[type=text]').hover(function() {
+        console.log('Focus: ' + this.name);
+        this.focused = true;
+    });
+
+    jQuery('input').blur(function() {
+        this.focused = false;
+    });
+});*/
 </script>

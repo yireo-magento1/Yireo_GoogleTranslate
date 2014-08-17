@@ -13,7 +13,7 @@
 
     <modules>
         <Yireo_GoogleTranslate>
-            <version>0.2.5</version>
+            <version>2.6.0</version>
         </Yireo_GoogleTranslate>
     </modules>
 
@@ -115,6 +115,8 @@
             <googletranslate>
                 <buttonlabel>GoogleTranslate from $FROM to $TO</buttonlabel>
                 <bork>0</bork>
+                <widget_fixed>1</widget_fixed>
+                <jquery>1</jquery>
             </googletranslate>
         </catalog>
     </default>

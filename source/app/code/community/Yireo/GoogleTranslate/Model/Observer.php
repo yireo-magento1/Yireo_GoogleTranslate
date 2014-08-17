@@ -51,6 +51,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         // Fetch the data ID (either category ID or product ID) from the URL
         $data_id = Mage::app()->getRequest()->getParam('id');
         if(empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('page_id');
+        if(empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('block_id');
 
         // If this data-type is unknown, do not display anything
         if($data_type == 'unknown') {

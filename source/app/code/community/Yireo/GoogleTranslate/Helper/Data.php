@@ -36,7 +36,8 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     public function hasApiSettings()
     {
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        if(empty($apiKey)) {
+        $bork = Mage::getStoreConfig('catalog/googletranslate/bork');
+        if(empty($apiKey) && empty($bork)) {
             return false;
         }
         return true;
@@ -104,13 +105,13 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
      * @param null
      * @return string
      */
-    public function getToLanguage()
+    public function getToLanguage($store = null)
     {
-        $current_store = Mage::app()->getRequest()->getUserParam('store');
-        $to_language = Mage::getStoreConfig('catalog/googletranslate/langcode', $current_store);
+        if(empty($store)) $store = Mage::app()->getRequest()->getUserParam('store');
+        $to_language = Mage::getStoreConfig('catalog/googletranslate/langcode', $store);
         if(empty($to_language)) {
-            $current_locale = Mage::getStoreConfig('general/locale/code', $current_store);
-            $to_language = preg_replace('/_(.*)/', '', $current_locale);
+            $locale = Mage::getStoreConfig('general/locale/code', $store);
+            $to_language = preg_replace('/_(.*)/', '', $locale);
         }
         return $to_language;
     }
@@ -127,5 +128,23 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         $to_language = self::getToLanguage();
         $to_title = Zend_Locale::getTranslation($to_language, 'language');
         return $to_title;
+    }
+
+    /*
+     * Return the title of the destination language
+     * 
+     * @access public
+     * @param null
+     * @return string
+     */
+    public function getStoreByCode($code)
+    {
+        $stores = Mage::app()->getStores();
+        foreach($stores as $store){
+            if($store->getCode() == $code) {
+                return $store;
+            }
+         }
+        return Mage::getModel('core/store');
     }
 }
