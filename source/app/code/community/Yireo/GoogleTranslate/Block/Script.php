@@ -13,46 +13,27 @@
  */
 class Yireo_GoogleTranslate_Block_Script extends Mage_Core_Block_Template
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setData('area','adminhtml');
-    }
-
     /*
-     * Return a specific URL
-     * 
-     * @access public
-     * @param string $route
-     * @param array $params
-     * @return string
-     */
-    public function getUrl($route='', $params=array())
-    {
-        return Mage::getModel('adminhtml/url')->getUrl($route, $params);
-    }
-
-    /*
-     * Return the configured API key version 2
+     * Return the customization ID
      * 
      * @access public
      * @param null
      * @return string
      */
-    public function getApiKey2()
+    public function getCustomizationId()
     {
-        return Mage::helper('googletranslate')->getApiKey2();
+        return Mage::helper('googletranslate')->getCustomizationId();
     }
 
     /*
-     * Return the configured API key
+     * Allow translation
      * 
      * @access public
      * @param null
-     * @return string
+     * @return bool
      */
-    public function getAjaxUrl()
+    public function allowTranslation()
     {
-        return $this->getUrl('googletranslate/index/'.$this->getPageType());
+        return true; // @todo: Disable on specific pages?
     }
 }

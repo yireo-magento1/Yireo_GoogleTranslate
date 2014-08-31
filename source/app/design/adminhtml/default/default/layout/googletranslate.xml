@@ -34,8 +34,8 @@
         </reference>
 
         <reference name="before_body_end">
-            <block type="googletranslate/script" name="googletranslate_script" template="googletranslate/script.phtml" />
-            <block type="googletranslate/widget" name="googletranslate_widget" template="googletranslate/widget.phtml" after="-" />
+            <block type="googletranslate/adminhtml_script" name="googletranslate_script" template="googletranslate/script.phtml" />
+            <block type="googletranslate/adminhtml_widget" name="googletranslate_widget" template="googletranslate/widget.phtml" after="-" />
         </reference>
     </googletranslate_load>
 </layout>
