@@ -56,6 +56,18 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /*
+     * Return the customization ID
+     * 
+     * @access public
+     * @param null
+     * @return string
+     */
+    public function getCustomizationId()
+    {
+        return Mage::getStoreConfig('catalog/googletranslate/customization_id');
+    }
+
+    /*
      * Return the text of the button label
      * 
      * @access public

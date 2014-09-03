@@ -49,6 +49,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </bork>
+<<<<<<< HEAD
                         <widget_fixed translate="label">
                             <label>Set Widget AS Fixed</label>
                             <frontend_type>select</frontend_type>
@@ -69,6 +70,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </jquery>
+=======
+                        <customization_id translate="label">
+                            <label>Customization ID</label>
+                            <comment><![CDATA[ID used for optional frontend widget]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customization_id>
+>>>>>>> f13ac3777d1fe0f5c40d656ec18745af62f97f63
                     </fields>
                 </googletranslate>
             </groups>
