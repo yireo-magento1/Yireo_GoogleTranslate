@@ -108,4 +108,58 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         // Run the feed
         Mage::getModel('googletranslate/feed')->updateIfAllowed();
     }
+
+    /*
+     * Method fired on the event <content_translate_after>
+     *
+     * @access public
+     * @param Varien_Event_Observer $observer
+     * @return Yireo_GoogleTranslate_Model_Observer
+     */
+    public function contentTranslateAfter($observer)
+    {
+        $text = $observer->getEvent()->getText();
+        $fromLang = $observer->getEvent()->getFrom();
+        $toLang = $observer->getEvent()->getTo();
+
+        $translationFolder =  Mage::getSingleton('core/design_package')->getBaseDir(
+            array('_area' => 'adminhtml', '_type' => 'translations')
+        );
+
+        $translationFiles = array(
+            'translate_'.$fromLang.'_'.$toLang.'.csv',
+            'translate_'.$toLang.'.csv',
+            $fromLang.'_'.$toLang.'.csv',
+            $toLang.'.csv',
+        );
+    
+        foreach($translationFiles as $translationFile) {
+            if(file_exists($translationFolder.'/'.$translationFile)) {
+                $translationFile = $translationFolder.'/'.$translationFile;
+            } else {
+                $translationFile = null;
+            }
+        }
+
+        if(empty($translationFile)) {
+            return $this;
+        }
+
+        $translations = array();
+        if (($handle = fopen($translationFile, 'r')) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                if(empty($data[0])) continue;
+                if(empty($data[1])) continue;
+                $translations[$data[0]] = $data[1];
+            }
+        }
+        fclose($handle);
+
+        foreach($translations as $translationFrom => $translationTo) {
+            $text = str_replace($translationFrom, $translationTo, $text);
+        }
+
+        $observer->getEvent()->setData('text', $text); 
+        return $this;
+    }
 }

@@ -55,12 +55,12 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
         $options = array();
 
         $locale = Mage::getModel('core/locale')->getLocale();
-        $locales    = $locale->getLocaleList();
-        $languages  = $locale->getTranslationList('language', $locale);
+        $locales = $locale->getLocaleList();
+        $languages = $locale->getTranslationList('language', $locale);
 
         foreach ($locales as $code => $active) {
 
-            if(strstr($code, '_')) continue;
+            if (strstr($code, '_')) continue;
 
             if (!isset($languages[$code])) {
                 continue;

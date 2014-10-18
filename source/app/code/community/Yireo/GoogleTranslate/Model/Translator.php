@@ -41,7 +41,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
 
         // Load some variables
         if(empty($text)) $text = $this->getData('text');
-        if(empty($fromLang)) $fromLang = $this->getData('from');
+        if(empty($fromLang)) $fromLang = $this->getData('fromLang');
         if(empty($toLang)) $toLang = $this->getData('toLang');
 
         // Exception when toLang is wrong
@@ -49,6 +49,9 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
             $this->apiError = Mage::helper('googletranslate')->__('Translation-target is wrong ['.$toLang.']');
             return false;
         }
+
+        // Dispatch an event
+        Mage::dispatchEvent('content_translate_before', array('text' => &$text, 'from' => $fromLang, 'to' => $toLang));
 
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
         $headers = array();
@@ -133,6 +136,10 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
 
                 // Send the translation
             } else {
+
+                // Dispatch an event
+                Mage::dispatchEvent('content_translate_after', array('text' => &$translation, 'from' => $fromLang, 'to' => $toLang));
+
                 $this->apiTranslation = $translation;
                 return $this->apiTranslation;
             }
