@@ -13,8 +13,22 @@
  */
 class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
 {
+    /**
+     * Counter of characters
+     *
+     * @var int
+     */
     protected $charCount = 0;
 
+    /**
+     * Method to translate specific attributes of a specific product
+     *
+     * @param $product
+     * @param $productAttributes
+     * @param $stores
+     * @param int $delay
+     * @param bool $translate
+     */
     public function translate($product, $productAttributes, $stores, $delay = 0, $translate = true)
     {
         // Reset some values
@@ -31,10 +45,10 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
         $parentLanguage = preg_replace('/_(.*)/', '', $parentLocale);
 
         // Loop through the stores
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
 
-            if(!is_object($store)) {
-                if(is_numeric($store)) {
+            if (!is_object($store)) {
+                if (is_numeric($store)) {
                     $store = Mage::getModel('core/store')->load($store);
                 } else {
                     $store = Mage::helper('googletranslate')->getStoreByCode($store);
@@ -47,7 +61,7 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
             $currentLanguage = Mage::helper('googletranslate')->getToLanguage($store);
 
             // Loop through the attributes
-            foreach($productAttributes as $productAttribute) {
+            foreach ($productAttributes as $productAttribute) {
 
                 // Reset some values
                 $translatedValue = null;
@@ -59,24 +73,24 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
                 // Sanity checks
                 $productValue = trim($productValue);
                 $currentValue = trim($currentValue);
-                if(empty($productValue)) continue;
-                
+                if (empty($productValue)) continue;
+
                 // Overwrite existing values
-                if($productValue != $currentValue) {
-                    if((bool)Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
+                if ($productValue != $currentValue) {
+                    if ((bool)Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
                         continue;
                     }
                 }
 
                 // Translate the value
-                if($translate == true) {
+                if ($translate == true) {
                     $translatedValue = $translator->translate($productValue, $parentLanguage, $currentLanguage);
                     $apiError = $translator->getApiError();
-                    if(!empty($apiError)) {
-                        echo Mage::helper('googletranslate')->__('API-error for %s: %s', $product->getSku(), $apiError)."\n";
+                    if (!empty($apiError)) {
+                        echo Mage::helper('googletranslate')->__('API-error for %s: %s', $product->getSku(), $apiError) . "\n";
                     }
 
-                    if(!empty($translatedValue)) {
+                    if (!empty($translatedValue)) {
                         $product->setData($productAttribute, $translatedValue);
                         $product->getResource()->saveAttribute($product, $productAttribute);
                     }
@@ -87,13 +101,18 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
             }
 
             // Resave entire product
-            if($translate == true) {
+            if ($translate == true) {
                 $product->save();
             }
-            if($delay > 0) sleep((int)$delay);
+            if ($delay > 0) sleep((int)$delay);
         }
     }
 
+    /**
+     * Method to return the current character count
+     *
+     * @return int
+     */
     public function getCharCount()
     {
         return $this->charCount;

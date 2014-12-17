@@ -13,7 +13,7 @@
  */
 class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_Observer_Abstract
 {
-    /*
+    /**
      * Listen to the event core_block_abstract_to_html_before
      * 
      * @access public
@@ -96,7 +96,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <controller_action_predispatch>
      *
      * @access public
@@ -109,7 +109,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         Mage::getModel('googletranslate/feed')->updateIfAllowed();
     }
 
-    /*
+    /**
      * Method fired on the event <content_translate_after>
      *
      * @access public
@@ -161,5 +161,18 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
 
         $observer->getEvent()->setData('text', $text); 
         return $this;
+    }
+
+    public function coreBlockAbstractPrepareLayoutBefore($observer)
+    {
+        $block = $observer->getEvent()->getBlock();
+        if(get_class($block) =='Mage_Adminhtml_Block_Widget_Grid_Massaction'
+            && $block->getRequest()->getControllerName() == 'catalog_product')
+        {
+            $block->addItem('googletranslate', array(
+                'label' => 'Translate via GoogleTranslate',
+                'url' => Mage::helper('adminhtml')->getUrl('googletranslate/index/batch', array('type' => 'product')),
+            ));
+        }
     }
 }

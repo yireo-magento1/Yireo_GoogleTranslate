@@ -17,17 +17,60 @@
 class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Action
 {
     /**
-     * AJAX callback for products
+     * Common method
+     *
+     * @access protected
+     * @param null
+     * @return Yireo_DeleteAnyOrder_DeleteanyorderController
+     */
+    protected function _initAction()
+    {
+        $this->loadLayout()
+            ->_setActiveMenu('system/tools/googletranslate')
+            ->_addBreadcrumb(Mage::helper('adminhtml')->__('System'), Mage::helper('adminhtml')->__('System'))
+            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Tools'), Mage::helper('adminhtml')->__('Tools'))
+            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Google Translate'), Mage::helper('adminhtml')->__('Google Translate'))
+        ;
+        return $this;
+    }
+
+    /**
+     * Batch page
      *
      * @access public
      * @param null
      * @return null
      */
+    public function batchAction()
+    {
+        $this->_initAction()
+            ->_addContent($this->getLayout()->createBlock('googletranslate/adminhtml_batch'))
+            ->renderLayout();
+    }
+
+    public function translateProductAction()
+    {
+        $productId = $this->getRequest()->getParam('product_id');
+        $product = Mage::getModel('catalog/product')->load($productId);
+        if(!$product->getId() > 0) {
+            return $this->sendError($this->__('No product loaded for ID '.$productId));
+        }
+
+        return $this->sendMessage('Translating product attributes: '.$product->getName());
+    }
+
+    /**
+     * AJAX callback for products
+     *
+     * @access public
+     * @param null
+     * @return mixed
+     */
     public function productAction()
     {
         // Load the initial data, and don't continue if this fails
         if($this->preload() == false) {
-            return;
+            return null;
         }
 
         // Load the correct data-model
@@ -50,6 +93,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
         // Make the request to the API
         $this->translate();
+        return null;
     }
 
     /**
@@ -57,13 +101,13 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access public
      * @param null
-     * @return null
+     * @return mixed
      */
     public function categoryAction()
     {
         // Load the initial data, and don't continue if this fails
         if($this->preload() == false) {
-            return;
+            return null;
         }
 
         // Load the correct data-model
@@ -86,6 +130,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
         // Make the request to the API
         $this->translate();
+        return null;
     }
 
     /**
@@ -93,13 +138,13 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access public
      * @param null
-     * @return null
+     * @return mixed
      */
     public function pageAction()
     {
         // Load the initial data, and don't continue if this fails
         if($this->preload() == false) {
-            return;
+            return null;
         }
 
         // Load the correct data-model
@@ -122,6 +167,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
         // Make the request to the API
         $this->translate();
+        return null;
     }
 
     /**
@@ -129,13 +175,13 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access public
      * @param null
-     * @return null
+     * @return mixed
      */
     public function blockAction()
     {
         // Load the initial data, and don't continue if this fails
         if($this->preload() == false) {
-            return;
+            return null;
         }
 
         // Load the correct data-model
@@ -157,6 +203,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
         // Make the request to the API
         $this->translate();
+        return null;
     }
 
     /**
@@ -164,7 +211,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access protected
      * @param null
-     * @return null
+     * @return mixed
      */
     protected function preload()
     {
@@ -198,9 +245,15 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $translator->setData('toLang', $toLang);
         $translator->setData('store', $store);
         $translator->setData('apiKey', $apiKey);
+
         return true;
     }
 
+    /**
+     * Method to return the translator object
+     *
+     * @return Yireo_GoogleTranslate_Model_Translator
+     */
     public function getTranslator()
     {
         return Mage::getSingleton('googletranslate/translator');
@@ -223,6 +276,20 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         }
 
         return $this->sendTranslation($text);
+    }
+
+    /** 
+     * Helper method to send a success
+     *
+     * @access protected
+     * @param string $message
+     * @return null
+     */
+    protected function sendMessage($message = null) 
+    {
+        $result = array('message' => $message);
+        echo json_encode($result);
+        return true;
     }
 
     /** 

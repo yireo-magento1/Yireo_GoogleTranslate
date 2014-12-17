@@ -53,6 +53,7 @@ class Yireo_GoogleTranslate_Model_Feed extends Mage_AdminNotification_Model_Feed
 
         // Update the feed
         $this->checkUpdate();
+        return true;
     }
 
     /**

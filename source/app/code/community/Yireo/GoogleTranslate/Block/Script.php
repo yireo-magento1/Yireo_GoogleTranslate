@@ -13,7 +13,7 @@
  */
 class Yireo_GoogleTranslate_Block_Script extends Mage_Core_Block_Template
 {
-    /*
+    /**
      * Return the customization ID
      * 
      * @access public
@@ -25,7 +25,7 @@ class Yireo_GoogleTranslate_Block_Script extends Mage_Core_Block_Template
         return Mage::helper('googletranslate')->getCustomizationId();
     }
 
-    /*
+    /**
      * Allow translation
      * 
      * @access public

@@ -13,15 +13,18 @@
  */
 class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Template
 {
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
     }
 
-    /*
+    /**
      * Return the current source-language
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -31,19 +34,19 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
         return Mage::helper('googletranslate')->getFromLanguage();
     }
 
-    /*
-    * Return the current destination-language
-    *
-    * @access public
-    * @param null
-    * @return string
-    */
+    /**
+     * Return the current destination-language
+     *
+     * @access public
+     * @param null
+     * @return string
+     */
     public function getDestinationLanguage()
     {
         return Mage::helper('googletranslate')->getToLanguage();
     }
 
-    /*
+    /**
      * Return a list of languages
      *
      * @access public
@@ -70,10 +73,24 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
 
             $options[] = array(
                 'value' => $code,
-                'label' => $label.' ['.$code.']',
+                'label' => $label . ' [' . $code . ']',
             );
         }
 
         return $options;
+    }
+
+    public function getStoreLanguages()
+    {
+        $stores = Mage::getModel('core/store')->getCollection();
+        $data = array();
+
+        foreach($stores as $store) {
+            $locale = Mage::getStoreConfig('general/locale/code', $store);
+            $language = preg_replace('/_(.*)/', '', $locale);
+            $data['s' . $store->getId()] = $language;
+        }
+
+        return $data;
     }
 }

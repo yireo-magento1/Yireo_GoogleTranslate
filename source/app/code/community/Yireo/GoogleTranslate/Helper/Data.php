@@ -1,6 +1,6 @@
 <?php
 /**
- * Yireo GoogleTranslate for Magento 
+ * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
@@ -13,39 +13,39 @@
  */
 class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    /*
+    /**
      * Switch to determine whether the extension is enabled or not
-     * 
+     *
      * @access public
      * @param null
      * @return boolean
      */
     public function enabled()
     {
-        if($this->hasApiSettings() == false) return false;
+        if ($this->hasApiSettings() == false) return false;
         return true;
     }
 
-    /*
-    * Check whether the API-details are configured
-    *
-    * @access public
-    * @param null
-    * @return string
-    */
+    /**
+     * Check whether the API-details are configured
+     *
+     * @access public
+     * @param null
+     * @return string
+     */
     public function hasApiSettings()
     {
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
         $bork = Mage::getStoreConfig('catalog/googletranslate/bork');
-        if(empty($apiKey) && empty($bork)) {
+        if (empty($apiKey) && empty($bork)) {
             return false;
         }
         return true;
     }
 
-    /*
+    /**
      * Return the API-key
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -55,9 +55,9 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig('catalog/googletranslate/apikey2');
     }
 
-    /*
+    /**
      * Return the customization ID
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -67,9 +67,9 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig('catalog/googletranslate/customization_id');
     }
 
-    /*
+    /**
      * Return the text of the button label
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -82,9 +82,9 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return $label;
     }
 
-    /*
+    /**
      * Return the source language
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -96,9 +96,9 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return $from_language;
     }
 
-    /*
+    /**
      * Return the title of the source language
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -110,27 +110,56 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return $from_title;
     }
 
-    /*
+    /**
      * Return the destination language
-     * 
+     *
      * @access public
      * @param null
      * @return string
      */
     public function getToLanguage($store = null)
     {
-        if(empty($store)) $store = Mage::app()->getRequest()->getUserParam('store');
+        if (empty($store)) {
+            $store = Mage::app()->getRequest()->getUserParam('store');
+        }
+
         $to_language = Mage::getStoreConfig('catalog/googletranslate/langcode', $store);
-        if(empty($to_language)) {
+        if (empty($to_language)) {
             $locale = Mage::getStoreConfig('general/locale/code', $store);
             $to_language = preg_replace('/_(.*)/', '', $locale);
         }
+
+        $controllerName = Mage::app()->getRequest()->getControllerName();
+        if($controllerName == 'cms_block') {
+            $blockId = Mage::app()->getRequest()->getParam('block_id');
+            if($blockId > 0) {
+                $block = Mage::getModel('cms/block')->load($blockId);
+                $storeIds = $block->getStoreId();
+                if(is_array($storeIds) && count($storeIds) == 1) {
+                    $storeId = $storeIds[0];
+                    $locale = Mage::getStoreConfig('general/locale/code', $storeId);
+                    $to_language = preg_replace('/_(.*)/', '', $locale);
+                }
+            }
+        } elseif($controllerName == 'cms_page') {
+            $pageId = Mage::app()->getRequest()->getParam('page_id');
+            if($pageId > 0) {
+                $page = Mage::getModel('cms/page')->load($pageId);
+                $storeIds = $page->getStoreId();
+                if(is_array($storeIds) && count($storeIds) == 1) {
+                    $storeId = $storeIds[0];
+                    $locale = Mage::getStoreConfig('general/locale/code', $storeId);
+                    $to_language = preg_replace('/_(.*)/', '', $locale);
+                }
+            }
+        }
+
         return $to_language;
     }
 
-    /*
+    /**
      * Return the title of the destination language
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -142,9 +171,9 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         return $to_title;
     }
 
-    /*
+    /**
      * Return the title of the destination language
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -152,11 +181,11 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStoreByCode($code)
     {
         $stores = Mage::app()->getStores();
-        foreach($stores as $store){
-            if($store->getCode() == $code) {
+        foreach ($stores as $store) {
+            if ($store->getCode() == $code) {
                 return $store;
             }
-         }
+        }
         return Mage::getModel('core/store');
     }
 }

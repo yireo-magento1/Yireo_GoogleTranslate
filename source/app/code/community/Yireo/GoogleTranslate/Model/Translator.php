@@ -13,17 +13,42 @@
  */
 class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
 {
+    /**
+     * String containing the API URL
+     *
+     * @var string
+     */
     protected $apiUrl = 'https://www.googleapis.com/language/translate/v2';
 
+    /**
+     * Container for possible API errors
+     *
+     * @var null
+     */
     protected $apiError = null;
 
+    /**
+     * String containing the translated content received from the API
+     *
+     * @var null
+     */
     protected $apiTranslation = null;
 
     /**
-     * Method to call upon the Google API
+     * Method to call upon the Bing API
+     *
+     * @param string $text
+     * @param string $fromLang
+     * @param string $toLang
+     * @return text
      */
     public function translate($text = null, $fromLang = null, $toLang = null)
     {
+        // Load some variables
+        if(empty($text)) $text = $this->getData('text');
+        if(empty($fromLang)) $fromLang = $this->getData('fromLang');
+        if(empty($toLang)) $toLang = $this->getData('toLang');
+
         // Bork debugging
         if(Mage::getStoreConfig('catalog/googletranslate/bork')) {
             $this->apiTranslation = $this->bork($text);
@@ -36,11 +61,6 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
             $this->apiError = Mage::helper('googletranslate')->__('API-translation is disabled for this demo');
             return false;
         }
-
-        // Load some variables
-        if(empty($text)) $text = $this->getData('text');
-        if(empty($fromLang)) $fromLang = $this->getData('fromLang');
-        if(empty($toLang)) $toLang = $this->getData('toLang');
 
         // Exception when toLang is wrong
         if(empty($toLang) || $toLang == 'auto') {
@@ -156,6 +176,11 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         return false;
     }
 
+    /**
+     * Method to check whether there has been an error in the API
+     *
+     * @return bool
+     */
     public function hasApiError()
     {
         if(!empty($this->apiError)) {
@@ -164,53 +189,104 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         return false;
     }
 
+    /**
+     * Method to return the API error, if any
+     *
+     * @return null
+     */
     public function getApiError()
     {
         return $this->apiError;
     }
 
+    /**
+     * Method to return the API translation
+     *
+     * @return string
+     */
     public function getApiTranslation()
     {
         return $this->apiTranslation;
     }
 
+    /**
+     * Method to write some debugging to a log
+     *
+     * @access public
+     * @param $string
+     * @param $fromLang
+     * @param $toLang
+     * @return void
+     */
+    public function debugLog($string, $fromLang, $toLang)
+    {
+        if(!is_dir(BP.DS.'var'.DS.'log')) @mkdir(BP.DS.'var'.DS.'log');
+        $tmp_file = BP.DS.'var'.DS.'log'.DS.'googletranslate.log';
+        $tmp_string = $this->__('Translating from %s to %s', $fromLang, $toLang);
+        file_put_contents($tmp_file, $tmp_string."\n", FILE_APPEND);
+        file_put_contents($tmp_file, $string."\n", FILE_APPEND);
+    }
+
+    /**
+     * Method to translate a certain text
+     *
+     * @param $string
+     * @param null $variable1
+     * @param null $variable2
+     * @return string
+     */
     public function __($string, $variable1 = null, $variable2 = null)
     {
         return Mage::helper('googletranslate')->__($string, $variable1, $variable2);
     }
 
+    /**
+     * Method to borkify a given text
+     *
+     * @access public
+     * @param $text
+     * @return mixed|string
+     */
     public function bork($text)
     {
         $textBlocks = preg_split( '/(%[^ ]+)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE );
         $newTextBlocks = array();
-        foreach ( $textBlocks as $text )
+
+        foreach ($textBlocks as $text)
         {
-            if ( strlen( $text ) && $text[0] == '%' )
+            if (strlen($text) && $text[0] == '%')
             {
                 $newTextBlocks[] = (string) $text;
                 continue;
             }
+
             $orgtext = $text;
             $searchMap = array(
                 '/au/', '/\Bu/', '/\Btion/', '/an/', '/a\B/', '/en\b/',
                 '/\Bew/', '/\Bf/', '/\Bir/', '/\Bi/', '/\bo/', '/ow/', '/ph/',
-                '/th\b/', '/\bU/', '/y\b/', '/v/', '/w/', '/ooo/',
+                '/th\b/', '/\bU/', '/y\b/', '/v/', '/w/', '/oo/', '/oe/'
             );
             $replaceMap = array(
                 'oo', 'oo', 'shun', 'un', 'e', 'ee',
                 'oo', 'ff', 'ur', 'ee', 'oo', 'oo', 'f',
-                't', 'Oo', 'ai', 'f', 'v', 'oo',
+                't', 'Oo', 'ai', 'f', 'v', 'ø', 'œ',
             );
+
             $text = preg_replace( $searchMap, $replaceMap, $text );
-            if ( $orgtext == $text && count( $newTextBlocks ) )
+            if ($orgtext == $text && count($newTextBlocks))
             {
                 $text .= '-a';
             }
+
+            if(empty($text)) $text = $orgText;
+
             $newTextBlocks[] = (string) $text;
         }
+
         $text = implode( '', $newTextBlocks );
         $text = preg_replace( '/([:.?!])(.*)/', '\\2\\1', $text );
-        $text .= ' Bork bork.';
+        //$text .= '['.$this->getData('toLang').']';
+
         return $text;
     }
 }

@@ -13,9 +13,15 @@
  */
 class Yireo_GoogleTranslate_Helper_Observer extends Mage_Core_Helper_Abstract
 {
-    /*
+    /**
      * Helper method to fetch the button-HTML
      *
+     * @access public
+     * @param int $id
+     * @param string $label
+     * @param bool $disabled
+     * @param array $arguments
+     * @return string
      */
     public function button($id, $label, $disabled = false, $arguments)
     {
@@ -28,22 +34,26 @@ class Yireo_GoogleTranslate_Helper_Observer extends Mage_Core_Helper_Abstract
         // Construct the button HTML-code
         $html = Mage::getSingleton('core/layout')
             ->createBlock('adminhtml/widget_button', '', array(
-            'label' => Mage::helper('googletranslate')->__($label),
-            'type' => 'button',
-            'disabled' => $disabled,
-            'class' => ($disabled) ? 'googletranslate_button disabled' : 'googletranslate_button',
-            'style' => 'margin-right:5px;margin-top:5px;',
-            'id' => 'googletranslate_button_'.$id,
-            'onclick' => 'googletranslate('.implode(',', $jsArgs).')'
-        ))->toHtml();
+                'label' => Mage::helper('googletranslate')->__($label),
+                'type' => 'button',
+                'disabled' => $disabled,
+                'class' => ($disabled) ? 'googletranslate_button disabled' : 'googletranslate_button',
+                'style' => 'margin-right:5px;margin-top:5px;',
+                'id' => 'googletranslate_button_' . $id,
+                'onclick' => 'googletranslate(' . implode(',', $jsArgs) . ')'
+            ))->toHtml();
 
         return $html;
     }
 
-    /*
-    * Helper method to fetch the button-HTML
-    *
-    */
+    /**
+     * Helper method to fetch the button-HTML
+     *
+     * @access public
+     * @param string $attribute_code
+     * @param string $html_id
+     * @return string
+     */
     public function script($attribute_code, $html_id)
     {
         // Construct the button JavaScript-code

@@ -13,13 +13,16 @@
  */
 class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Template
 {
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         parent::__construct();
         $this->setData('area','adminhtml');
     }
 
-    /*
+    /**
      * Return a specific URL
      * 
      * @access public
@@ -32,7 +35,7 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
         return Mage::getModel('adminhtml/url')->getUrl($route, $params);
     }
 
-    /*
+    /**
      * Return the configured API key version 2
      * 
      * @access public
@@ -44,7 +47,7 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
         return Mage::helper('googletranslate')->getApiKey2();
     }
 
-    /*
+    /**
      * Return the configured API key
      * 
      * @access public
