@@ -32,6 +32,7 @@
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/googletranslate.css</name></action>
             <action method="addItem" ifconfig="catalog/googletranslate/jquery"><type>skin_js</type><name>js/googletranslate/jquery.js</name></action>
+            <action method="addItem" ifconfig="catalog/googletranslate/jquery"><type>skin_js</type><name>js/googletranslate/jquery-noconflict.js</name></action>
         </reference>
 
         <reference name="before_body_end">
@@ -39,4 +40,16 @@
             <block type="googletranslate/adminhtml_widget" name="googletranslate_widget" template="googletranslate/widget.phtml" after="-" />
         </reference>
     </googletranslate_load>
+
+    <googletranslate_index_batch>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/googletranslate/jquery-ui.min.css</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/googletranslate/jquery-ui.theme.css</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/googletranslate/jquery-ui.structure.min.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-noconflict.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-ui.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/googletranslate.js</name></action>
+        </reference>
+    </googletranslate_index_batch>
 </layout>

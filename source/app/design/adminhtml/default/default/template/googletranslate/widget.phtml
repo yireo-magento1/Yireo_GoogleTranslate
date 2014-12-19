@@ -39,15 +39,11 @@ if(Mage::getStoreConfig('catalog/googletranslate/widget_fixed') == 1) {
             <?php endforeach; ?>
         </select>
     </div>
-
-    <!--<div class="field">
-        <button type="button" class="button" onclick="googletranslate_current(); return false;">
-            <span><span><?php echo $this->__('Translate Current Value'); ?></span></span>
-        </button>
-    </div>-->
 </div>
 
 <script type="text/javascript">
+var storeLanguages = <?php echo json_encode($this->getStoreLanguages()); ?>;
+
 function googletranslate_change() {
 
     var source = $('googletranslate_source_language');
@@ -71,24 +67,15 @@ function googletranslate_change() {
     }
 }
 
-/*function googletranslate_current() {
-    jQuery('input').each(function() {
-        element = jQuery('input[name="' + this.name + '"]');
-        focus = element.focused;
-        if(focus == true) {
-            console.log('Focus: ' + element.name);
+Ajax.Responders.register({
+  onComplete: function() {
+    if(storeSwitcher = jQuery('#store_switcher')) {
+        store = storeSwitcher.val();
+        if(store > 0) {
+            storeLanguage = storeLanguages['s' + store];
+            jQuery('#googletranslate_destination_language').val(storeLanguage);
         }
-    });
-}
-    
-jQuery(document).ready(function() {
-    jQuery('input[type=text]').hover(function() {
-        console.log('Focus: ' + this.name);
-        this.focused = true;
-    });
-
-    jQuery('input').blur(function() {
-        this.focused = false;
-    });
-});*/
+    }
+  }
+});
 </script>

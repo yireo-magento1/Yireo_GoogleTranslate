@@ -78,6 +78,26 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customization_id>
+                        <batch_attributes translate="label">
+                            <label>Batch Attributes</label>
+                            <comment><![CDATA[Attributes to translate when running batches]]></comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>googletranslate/system_config_source_attribute</source_model>
+                            <sort_order>81</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </batch_attributes>
+                        <batch_stores translate="label">
+                            <label>Batch Store Views</label>
+                            <comment><![CDATA[Store Views to translate to when running batches]]></comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_store</source_model>
+                            <sort_order>82</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </batch_stores>
                     </fields>
                 </googletranslate>
             </groups>
