@@ -5,7 +5,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (C) 2014 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
@@ -132,6 +132,9 @@
             <googletranslate>
                 <buttonlabel>GoogleTranslate from $FROM to $TO</buttonlabel>
                 <bork>0</bork>
+                <overwrite_existing>0</overwrite_existing>
+                <skip_translation>0</skip_translation>
+                <logging>0</logging>
                 <widget_fixed>1</widget_fixed>
                 <jquery>1</jquery>
             </googletranslate>

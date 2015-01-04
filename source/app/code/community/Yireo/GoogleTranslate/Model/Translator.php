@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (C) 2014 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -44,6 +44,12 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      */
     public function translate($text = null, $fromLang = null, $toLang = null)
     {
+        // Disable translating
+        if(Mage::getStoreConfig('catalog/googletranslate/skip_translation')) {
+            $this->apiError = Mage::helper('googletranslate')->__('API-translation is disabled through setting');
+            return false;
+        }
+
         // Load some variables
         if(empty($text)) $text = $this->getData('text');
         if(empty($fromLang)) $fromLang = $this->getData('fromLang');
@@ -83,7 +89,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
             'prettyprint' => '1',
             'q' => $text,
         );
-        //Mage::log('GoogleTranslate debug request: '.var_export($post_fields, true));
+        //Mage::helper('googletranslate')->log('GoogleTranslate debug request', $post_fields);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->apiUrl);

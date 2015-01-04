@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (C) 2014 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -13,6 +13,13 @@
  */
 class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
 {
+    /**
+     * Allow translation
+     *
+     * @var boolean
+     */
+    protected $allowTranslation = true;
+
     /**
      * Counter of characters
      *
@@ -29,10 +36,15 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
      * @param int $delay
      * @param bool $translate
      */
-    public function translate($product, $productAttributes, $stores, $delay = 0, $translate = true)
+    public function translate($product, $productAttributes, $stores, $delay = 0, $allowTranslation = null)
     {
         // Reset some values
         $this->charCount = 0;
+
+        // Set the flag for translation
+        if (is_bool($allowTranslation)) {
+            $this->allowTranslation = $allowTranslation;
+        }
 
         // Load the entire product
         $product = Mage::getModel('catalog/product')->load($product->getId());
@@ -63,6 +75,10 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
             // Loop through the attributes
             foreach ($productAttributes as $productAttribute) {
 
+                // Log
+                $log = Mage::helper('googletranslate')->__('Translating attribute "%s" of "%s" for store "%s"', $productAttribute, $product->getSku(), $store->getName());
+                Mage::helper('googletranslate')->log($log);
+
                 // Reset some values
                 $translatedValue = null;
 
@@ -73,21 +89,28 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
                 // Sanity checks
                 $productValue = trim($productValue);
                 $currentValue = trim($currentValue);
-                if (empty($productValue)) continue;
+
+                if (empty($productValue)) {
+                    Mage::helper('googletranslate')->log(Mage::helper('googletranslate')->__('Empty product value, so skipping'));
+                    continue;
+                }
 
                 // Overwrite existing values
                 if ($productValue != $currentValue) {
-                    if ((bool)Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
+                    if ((bool) Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
+                        Mage::helper('googletranslate')->log(Mage::helper('googletranslate')->__('Existing value, so skipping'));
                         continue;
                     }
                 }
 
                 // Translate the value
-                if ($translate == true) {
+                if ($this->allowTranslation == true) {
+
                     $translatedValue = $translator->translate($productValue, $parentLanguage, $currentLanguage);
                     $apiError = $translator->getApiError();
+
                     if (!empty($apiError)) {
-                        echo Mage::helper('googletranslate')->__('API-error for %s: %s', $product->getSku(), $apiError) . "\n";
+                        Mage::helper('googletranslate')->log(Mage::helper('googletranslate')->__('API-error for %s: %s', $product->getSku(), $apiError));
                     }
 
                     if (!empty($translatedValue)) {
@@ -101,10 +124,14 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
             }
 
             // Resave entire product
-            if ($translate == true) {
+            if ($this->allowTranslation == true) {
                 $product->save();
             }
-            if ($delay > 0) sleep((int)$delay);
+
+            // Artificial sleep to give the API a rest
+            if ($delay > 0) {
+                sleep((int) $delay);
+            }
         }
     }
 
@@ -116,5 +143,15 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
     public function getCharCount()
     {
         return $this->charCount;
+    }
+
+    /**
+     * Method to toggle the flag which allows translation
+     *
+     * @param bool $allowTranslation
+     */
+    public function allowTranslation($allowTranslation)
+    {
+        return $this->allowTranslation = (bool) $allowTranslation;
     }
 }

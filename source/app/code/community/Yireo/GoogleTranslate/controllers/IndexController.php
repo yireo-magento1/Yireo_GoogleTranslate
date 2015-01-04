@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (C) 2014 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -50,13 +50,26 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
     public function translateProductAction()
     {
-        $productId = $this->getRequest()->getParam('product_id');
+        $data = explode('|', $this->getRequest()->getParam('data'));
+        $productId = $data[0];
+        $storeId = $data[1];
+        $attributeCode = $data[2];
+
         $product = Mage::getModel('catalog/product')->load($productId);
         if(!$product->getId() > 0) {
             return $this->sendError($this->__('No product loaded for ID '.$productId));
         }
 
-        return $this->sendMessage('Translating product attributes: '.$product->getName());
+        $store = Mage::getModel('core/store')->load($storeId);
+        if(!$store->getId() > 0) {
+            return $this->sendError($this->__('No store loaded for ID '.$storeId));
+        }
+
+        $translator = Mage::getModel('googletranslate/product');
+        $translator->translate($product, array($attributeCode), array($store));
+        $charCount = $translator->getCharCount();
+
+        return $this->sendMessage($this->__('Translated attribute "%s" for SKU "%s" in Store View "%s" (%s characters)', $attributeCode, $product->getSku(), $store->getCode(), $charCount));
     }
 
     /**
