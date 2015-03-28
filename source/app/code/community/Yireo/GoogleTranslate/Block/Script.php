@@ -1,6 +1,6 @@
 <?php
 /**
- * Yireo GoogleTranslate for Magento 
+ * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
@@ -15,7 +15,7 @@ class Yireo_GoogleTranslate_Block_Script extends Mage_Core_Block_Template
 {
     /**
      * Return the customization ID
-     * 
+     *
      * @access public
      * @param null
      * @return string
@@ -27,7 +27,7 @@ class Yireo_GoogleTranslate_Block_Script extends Mage_Core_Block_Template
 
     /**
      * Allow translation
-     * 
+     *
      * @access public
      * @param null
      * @return bool

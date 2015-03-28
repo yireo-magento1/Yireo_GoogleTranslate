@@ -19,6 +19,7 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
     public function __construct()
     {
         parent::__construct();
+
         $this->setData('area', 'adminhtml');
     }
 
@@ -80,12 +81,15 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
         return $options;
     }
 
+    /**
+     * @return array
+     */
     public function getStoreLanguages()
     {
         $stores = Mage::getModel('core/store')->getCollection();
         $data = array();
 
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
             $locale = Mage::getStoreConfig('general/locale/code', $store);
             $language = preg_replace('/_(.*)/', '', $locale);
             $data['s' . $store->getId()] = $language;

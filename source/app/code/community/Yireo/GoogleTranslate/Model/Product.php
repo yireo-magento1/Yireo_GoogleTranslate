@@ -34,7 +34,8 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
      * @param $productAttributes
      * @param $stores
      * @param int $delay
-     * @param bool $translate
+     * @param bool $allowTranslation
+     * @return null
      */
     public function translate($product, $productAttributes, $stores, $delay = 0, $allowTranslation = null)
     {
@@ -97,7 +98,7 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
 
                 // Overwrite existing values
                 if ($productValue != $currentValue) {
-                    if ((bool) Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
+                    if ((bool)Mage::getStoreConfig('catalog/googletranslate/overwrite_existing') == false) {
                         Mage::helper('googletranslate')->log(Mage::helper('googletranslate')->__('Existing value, so skipping'));
                         continue;
                     }
@@ -130,7 +131,7 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
 
             // Artificial sleep to give the API a rest
             if ($delay > 0) {
-                sleep((int) $delay);
+                sleep((int)$delay);
             }
         }
     }
@@ -149,9 +150,10 @@ class Yireo_GoogleTranslate_Model_Product extends Mage_Core_Model_Abstract
      * Method to toggle the flag which allows translation
      *
      * @param bool $allowTranslation
+     * @return bool
      */
     public function allowTranslation($allowTranslation)
     {
-        return $this->allowTranslation = (bool) $allowTranslation;
+        return $this->allowTranslation = (bool)$allowTranslation;
     }
 }

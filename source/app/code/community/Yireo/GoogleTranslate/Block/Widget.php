@@ -1,6 +1,6 @@
 <?php
 /**
- * Yireo GoogleTranslate for Magento 
+ * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
@@ -11,7 +11,6 @@
 /**
  * GoogleTranslate Widget-block
  */
-
 class Yireo_GoogleTranslate_Block_Widget extends Mage_Core_Block_Template
 {
     /*
@@ -47,7 +46,7 @@ class Yireo_GoogleTranslate_Block_Widget extends Mage_Core_Block_Template
      */
     public function getIncludedLanguages()
     {
-        return array; // @todo
+        return array(); // @todo
     }
 
     /*

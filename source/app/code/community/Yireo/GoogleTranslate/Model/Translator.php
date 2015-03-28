@@ -45,32 +45,32 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
     public function translate($text = null, $fromLang = null, $toLang = null)
     {
         // Disable translating
-        if(Mage::getStoreConfig('catalog/googletranslate/skip_translation')) {
-            $this->apiError = Mage::helper('googletranslate')->__('API-translation is disabled through setting');
+        if (Mage::getStoreConfig('catalog/googletranslate/skip_translation')) {
+            $this->apiError = $this->__('API-translation is disabled through setting');
             return false;
         }
 
-        // Load some variables
-        if(empty($text)) $text = $this->getData('text');
-        if(empty($fromLang)) $fromLang = $this->getData('fromLang');
-        if(empty($toLang)) $toLang = $this->getData('toLang');
-
         // Bork debugging
-        if(Mage::getStoreConfig('catalog/googletranslate/bork')) {
+        if (Mage::getStoreConfig('catalog/googletranslate/bork')) {
             $this->apiTranslation = $this->bork($text);
             return $this->apiTranslation;
         }
 
         // Demo
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        if($apiKey == 'DEMO') {
-            $this->apiError = Mage::helper('googletranslate')->__('API-translation is disabled for this demo');
+        if (strtolower($apiKey) == 'demo') {
+            $this->apiError = $this->__('API-translation is disabled for this demo');
             return false;
         }
 
+        // Load some variables
+        if (empty($text)) $text = $this->getData('text');
+        if (empty($fromLang)) $fromLang = $this->getData('fromLang');
+        if (empty($toLang)) $toLang = $this->getData('toLang');
+
         // Exception when toLang is wrong
-        if(empty($toLang) || $toLang == 'auto') {
-            $this->apiError = Mage::helper('googletranslate')->__('Translation-target is wrong ['.$toLang.']');
+        if (empty($toLang) || $toLang == 'auto') {
+            $this->apiError = $this->__('Translation-target is wrong [' . $toLang . ']');
             return false;
         }
 
@@ -104,11 +104,11 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         $result = curl_exec($ch);
 
         // Detect an empty CURL response
-        if(empty($result)) {
+        if (empty($result)) {
             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if($status_code > 200) {
+            if ($status_code > 200) {
                 $this->apiError = Mage::helper('googletranslate')->__('Empty response: HTTP %s', $status_code);
-                $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+                $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
                 return false;
             } else {
                 $test = curl_init();
@@ -117,7 +117,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
                 curl_setopt($test, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($test, CURLOPT_SSL_VERIFYPEER, false);
                 $result = curl_exec($test);
-                if(empty($result)) {
+                if (empty($result)) {
                     $this->apiError = Mage::helper('googletranslate')->__('Empty response: Firewall blocking: %s', curl_error($test));
                     return false;
                 } else {
@@ -128,34 +128,34 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         }
 
         // Detect HTML feedback
-        if(preg_match('/\<\/html\>$/', $result)) {
+        if (preg_match('/\<\/html\>$/', $result)) {
             $this->apiError = Mage::helper('googletranslate')->__('Response is HTML, not JSON');
-            $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+            $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
             return false;
         }
 
         // Detect non-JSON feedback
-        if(!preg_match('/^\{/', $result)) {
+        if (!preg_match('/^\{/', $result)) {
             $this->apiError = Mage::helper('googletranslate')->__('Not a JSON response');
-            $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+            $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
             return false;
         }
 
         // Decode the JSON-data
         $json = json_decode($result, true);
-        if(isset($json['data']['translations'][0]['translatedText'])) {
+        if (isset($json['data']['translations'][0]['translatedText'])) {
             $translation = trim($json['data']['translations'][0]['translatedText']);
 
             // Empty translation
-            if(empty($translation)) {
+            if (empty($translation)) {
                 $this->apiError = Mage::helper('googletranslate')->__('Empty translation');
-                $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+                $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
                 return false;
 
                 // Detect whether the translation was the same or not
-            } elseif($translation == $text) {
+            } elseif ($translation == $text) {
                 $this->apiError = Mage::helper('googletranslate')->__('Translation resulted in same text');
-                $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+                $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
                 return false;
 
                 // Send the translation
@@ -170,15 +170,15 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         }
 
         // Detect errors and send them as feedback
-        if(isset($json['error']['errors'][0]['message'])) {
+        if (isset($json['error']['errors'][0]['message'])) {
             $this->apiError = Mage::helper('googletranslate')->__('GoogleTranslate message: %s', var_export($json['error']['errors'][0]['message'], true));
-            $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
+            $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
             return false;
         }
 
         $this->apiError = Mage::helper('googletranslate')->__('Unknown data');
-        $this->apiError .= ' ['.Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang).']';
-        $this->apiError .= "\n".var_export($json, true);
+        $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
+        $this->apiError .= "\n" . var_export($json, true);
         return false;
     }
 
@@ -189,7 +189,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      */
     public function hasApiError()
     {
-        if(!empty($this->apiError)) {
+        if (!empty($this->apiError)) {
             return true;
         }
         return false;
@@ -226,11 +226,11 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      */
     public function debugLog($string, $fromLang, $toLang)
     {
-        if(!is_dir(BP.DS.'var'.DS.'log')) @mkdir(BP.DS.'var'.DS.'log');
-        $tmp_file = BP.DS.'var'.DS.'log'.DS.'googletranslate.log';
+        if (!is_dir(BP . DS . 'var' . DS . 'log')) @mkdir(BP . DS . 'var' . DS . 'log');
+        $tmp_file = BP . DS . 'var' . DS . 'log' . DS . 'googletranslate.log';
         $tmp_string = $this->__('Translating from %s to %s', $fromLang, $toLang);
-        file_put_contents($tmp_file, $tmp_string."\n", FILE_APPEND);
-        file_put_contents($tmp_file, $string."\n", FILE_APPEND);
+        file_put_contents($tmp_file, $tmp_string . "\n", FILE_APPEND);
+        file_put_contents($tmp_file, $string . "\n", FILE_APPEND);
     }
 
     /**
@@ -255,14 +255,12 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      */
     public function bork($text)
     {
-        $textBlocks = preg_split( '/(%[^ ]+)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE );
+        $textBlocks = preg_split('/(%[^ ]+)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         $newTextBlocks = array();
 
-        foreach ($textBlocks as $text)
-        {
-            if (strlen($text) && $text[0] == '%')
-            {
-                $newTextBlocks[] = (string) $text;
+        foreach ($textBlocks as $text) {
+            if (strlen($text) && $text[0] == '%') {
+                $newTextBlocks[] = (string)$text;
                 continue;
             }
 
@@ -278,19 +276,18 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
                 't', 'Oo', 'ai', 'f', 'v', 'ø', 'œ',
             );
 
-            $text = preg_replace( $searchMap, $replaceMap, $text );
-            if ($orgtext == $text && count($newTextBlocks))
-            {
+            $text = preg_replace($searchMap, $replaceMap, $text);
+            if ($orgtext == $text && count($newTextBlocks)) {
                 $text .= '-a';
             }
 
-            if(empty($text)) $text = $orgText;
+            if (empty($text)) $text = $orgText;
 
-            $newTextBlocks[] = (string) $text;
+            $newTextBlocks[] = (string)$text;
         }
 
-        $text = implode( '', $newTextBlocks );
-        $text = preg_replace( '/([:.?!])(.*)/', '\\2\\1', $text );
+        $text = implode('', $newTextBlocks);
+        $text = preg_replace('/([:.?!])(.*)/', '\\2\\1', $text);
         //$text .= '['.$this->getData('toLang').']';
 
         return $text;

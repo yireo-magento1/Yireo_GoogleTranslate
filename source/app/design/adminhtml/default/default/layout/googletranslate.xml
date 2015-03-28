@@ -49,7 +49,7 @@
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery.js</name></action>
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-noconflict.js</name></action>
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-ui.min.js</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/googletranslate/googletranslate.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/bingtranslate.js</name></action>
         </reference>
     </googletranslate_index_batch>
 </layout>

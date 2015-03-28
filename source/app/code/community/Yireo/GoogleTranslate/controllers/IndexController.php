@@ -1,6 +1,6 @@
 <?php
 /**
- * Yireo GoogleTranslate for Magento 
+ * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
@@ -21,7 +21,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access protected
      * @param null
-     * @return Yireo_DeleteAnyOrder_DeleteanyorderController
+     * @return Yireo_GoogleTranslate_IndexController
      */
     protected function _initAction()
     {
@@ -29,8 +29,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
             ->_setActiveMenu('system/tools/googletranslate')
             ->_addBreadcrumb(Mage::helper('adminhtml')->__('System'), Mage::helper('adminhtml')->__('System'))
             ->_addBreadcrumb(Mage::helper('adminhtml')->__('Tools'), Mage::helper('adminhtml')->__('Tools'))
-            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Google Translate'), Mage::helper('adminhtml')->__('Google Translate'))
-        ;
+            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Google Translate'), Mage::helper('adminhtml')->__('Google Translate'));
         return $this;
     }
 
@@ -48,6 +47,13 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
             ->renderLayout();
     }
 
+    /**
+     * Translate a specific product
+     *
+     * @access public
+     * @param null
+     * @return null
+     */
     public function translateProductAction()
     {
         $data = explode('|', $this->getRequest()->getParam('data'));
@@ -56,13 +62,13 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $attributeCode = $data[2];
 
         $product = Mage::getModel('catalog/product')->load($productId);
-        if(!$product->getId() > 0) {
-            return $this->sendError($this->__('No product loaded for ID '.$productId));
+        if (!$product->getId() > 0) {
+            return $this->sendError($this->__('No product loaded for ID ' . $productId));
         }
 
         $store = Mage::getModel('core/store')->load($storeId);
-        if(!$store->getId() > 0) {
-            return $this->sendError($this->__('No store loaded for ID '.$storeId));
+        if (!$store->getId() > 0) {
+            return $this->sendError($this->__('No store loaded for ID ' . $storeId));
         }
 
         $translator = Mage::getModel('googletranslate/product');
@@ -82,7 +88,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     public function productAction()
     {
         // Load the initial data, and don't continue if this fails
-        if($this->preload() == false) {
+        if ($this->preload() == false) {
             return null;
         }
 
@@ -92,14 +98,14 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $store = $translator->getData('store');
 
         $product = Mage::getModel('catalog/product')->setStoreId($store)->load($id);
-        if(!$product->getId() > 0) {
+        if (!$product->getId() > 0) {
             return $this->sendError($this->__('No product ID given'));
         }
 
         // Load the attribute-value
         $attribute = $translator->getData('attribute');
         $text = $product->getData($attribute);
-        if(empty($text)) {
+        if (empty($text)) {
             return $this->sendError($this->__('No product-data found for attribute %s', $attribute));
         }
         $translator->setData('text', $text);
@@ -119,7 +125,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     public function categoryAction()
     {
         // Load the initial data, and don't continue if this fails
-        if($this->preload() == false) {
+        if ($this->preload() == false) {
             return null;
         }
 
@@ -129,16 +135,17 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $store = $translator->getData('store');
 
         $category = Mage::getModel('catalog/category')->setStoreId($store)->load($id);
-        if(!$category->getId() > 0) {
+        if (!$category->getId() > 0) {
             return $this->sendError($this->__('No category ID given'));
         }
 
         // Load the attribute-value
         $attribute = $translator->getData('attribute');
         $text = $category->getData($attribute);
-        if(empty($text)) {
+        if (empty($text)) {
             return $this->sendError($this->__('No category-data found for attribute %s', $attribute));
         }
+
         $translator->setData('text', $text);
 
         // Make the request to the API
@@ -156,7 +163,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     public function pageAction()
     {
         // Load the initial data, and don't continue if this fails
-        if($this->preload() == false) {
+        if ($this->preload() == false) {
             return null;
         }
 
@@ -166,14 +173,14 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $store = $translator->getData('store');
 
         $page = Mage::getModel('cms/page')->setStoreId($store)->load($id);
-        if(!$page->getId() > 0) {
+        if (!$page->getId() > 0) {
             return $this->sendError($this->__('No CMS-page ID given'));
         }
 
         // Load the attribute-value
         $attribute = $translator->getData('attribute');
         $text = $page->getData($attribute);
-        if(empty($text)) {
+        if (empty($text)) {
             return $this->sendError($this->__('No page-data found for attribute %s', $attribute));
         }
         $translator->setData('text', $text);
@@ -193,7 +200,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     public function blockAction()
     {
         // Load the initial data, and don't continue if this fails
-        if($this->preload() == false) {
+        if ($this->preload() == false) {
             return null;
         }
 
@@ -202,14 +209,14 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $id = $translator->getData('id');
         $store = $translator->getData('store');
         $block = Mage::getModel('cms/block')->setStoreId($store)->load($id);
-        if(!$block->getId() > 0) {
+        if (!$block->getId() > 0) {
             return $this->sendError($this->__('No CMS-block ID given'));
         }
 
         // Load the attribute-value
         $attribute = $translator->getData('attribute');
         $text = $block->getData($attribute);
-        if(empty($text)) {
+        if (empty($text)) {
             return $this->sendError($this->__('No block-data found for attribute %s', $attribute));
         }
         $translator->setData('text', $text);
@@ -235,18 +242,18 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $store = $this->getRequest()->getParam('store');
 
         // Sanity checks
-        if(!$id > 0 || empty($attribute) || empty($fromLang) || empty($toLang)) {
+        if (!$id > 0 || empty($attribute) || empty($fromLang) || empty($toLang)) {
             return $this->sendError($this->__('Wrong parameters'));
         }
 
         // Set the language to empty, when 
-        if($fromLang == $toLang) {
+        if ($fromLang == $toLang) {
             $fromLang = null;
         }
 
         // Check for the API-key
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        if(empty($apiKey)) {
+        if (empty($apiKey)) {
             return $this->sendError($this->__('No API key'));
         }
 
@@ -273,7 +280,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-     * Method to call upon the Google API
+     * Method to call upon the API
      *
      * @access protected
      * @param null
@@ -284,49 +291,49 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $translator = $this->getTranslator();
         $text = $translator->translate();
 
-        if($translator->hasApiError()) {
+        if ($translator->hasApiError()) {
             return $this->sendError($translator->getApiError());
         }
 
         return $this->sendTranslation($text);
     }
 
-    /** 
+    /**
      * Helper method to send a success
      *
      * @access protected
      * @param string $message
      * @return null
      */
-    protected function sendMessage($message = null) 
+    protected function sendMessage($message = null)
     {
         $result = array('message' => $message);
         echo json_encode($result);
         return true;
     }
 
-    /** 
+    /**
      * Helper method to send a specific error
      *
      * @access protected
      * @param string $message
      * @return null
      */
-    protected function sendError($message = null) 
+    protected function sendError($message = null)
     {
         $result = array('error' => $message);
         echo json_encode($result);
         return false;
     }
 
-    /** 
+    /**
      * Helper method to send the translation
      *
      * @access protected
      * @param string $translation
      * @return null
      */
-    protected function sendTranslation($translation = null) 
+    protected function sendTranslation($translation = null)
     {
         $result = array('translation' => $translation);
         echo json_encode($result);

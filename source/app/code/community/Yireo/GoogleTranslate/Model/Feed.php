@@ -8,10 +8,10 @@
  * @license Open Source License (OSL v3) (OSL)
  * @link http://www.yireo.com
  */
-
 /*
  * Feed Model
  */
+
 class Yireo_GoogleTranslate_Model_Feed extends Mage_AdminNotification_Model_Feed
 {
     /**
@@ -24,9 +24,9 @@ class Yireo_GoogleTranslate_Model_Feed extends Mage_AdminNotification_Model_Feed
      *
      * @return string
      */
-    public function getFeedUrl() 
+    public function getFeedUrl()
     {
-        return Mage::getStoreConfigFlag(self::XML_USE_HTTPS_PATH) ? 'https://' : 'http://'.$this->customFeedUrl;
+        return Mage::getStoreConfigFlag(self::XML_USE_HTTPS_PATH) ? 'https://' : 'http://' . $this->customFeedUrl;
     }
 
     /**
@@ -47,7 +47,7 @@ class Yireo_GoogleTranslate_Model_Feed extends Mage_AdminNotification_Model_Feed
         }
 
         // Is the feed disabled?
-        if((bool)Mage::getStoreConfig('yireo/common/disabled')) {
+        if ((bool)Mage::getStoreConfig('yireo/common/disabled')) {
             return false;
         }
 

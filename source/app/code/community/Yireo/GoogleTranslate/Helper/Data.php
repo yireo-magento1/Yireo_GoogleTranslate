@@ -39,7 +39,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function log($message, $variable = null)
     {
-        $logging = (bool) Mage::getStoreConfig('catalog/googletranslate/logging');
+        $logging = (bool)Mage::getStoreConfig('catalog/googletranslate/logging');
         if ($logging == false) {
             return false;
         }
@@ -171,6 +171,20 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Return the title of the destination language
+     *
+     * @param null
+     *
+     * @return string
+     */
+    public function getToTitle()
+    {
+        $to_language = self::getToLanguage();
+        $to_title = Zend_Locale::getTranslation($to_language, 'language');
+        return $to_title;
+    }
+
+    /**
      * Get store from page
      *
      * @param mixed $pageId Page indicator
@@ -224,20 +238,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         $locale = Mage::getStoreConfig('general/locale/code', $store);
         $language = preg_replace('/_(.*)/', '', $locale);
         return $language;
-    }
-
-    /**
-     * Return the title of the destination language
-     *
-     * @param null
-     *
-     * @return string
-     */
-    public function getToTitle()
-    {
-        $to_language = self::getToLanguage();
-        $to_title = Zend_Locale::getTranslation($to_language, 'language');
-        return $to_title;
     }
 
     /**

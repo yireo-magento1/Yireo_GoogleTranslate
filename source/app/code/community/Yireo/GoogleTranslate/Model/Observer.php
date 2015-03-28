@@ -1,6 +1,6 @@
 <?php
 /**
- * Yireo GoogleTranslate for Magento 
+ * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
@@ -15,7 +15,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
 {
     /**
      * Listen to the event core_block_abstract_to_html_before
-     * 
+     *
      * @access public
      * @parameter Varien_Event_Observer $observer
      * @return $this
@@ -23,7 +23,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
     public function coreBlockAbstractToHtmlBefore($observer)
     {
         // Check if this event can continue
-        if($this->allow($observer) == false) {
+        if ($this->allow($observer) == false) {
             return $this;
         }
 
@@ -46,22 +46,22 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
 
         // Determine whether this field is disabled or not
         $disabled = false;
-        if($from_language == $to_language) $disabled = true;
+        if ($from_language == $to_language) $disabled = true;
 
         // Fetch the data ID (either category ID or product ID) from the URL
         $data_id = Mage::app()->getRequest()->getParam('id');
-        if(empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('page_id');
-        if(empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('block_id');
+        if (empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('page_id');
+        if (empty($data_id)) $data_id = Mage::app()->getRequest()->getParam('block_id');
 
         // If this data-type is unknown, do not display anything
-        if($data_type == 'unknown') {
+        if ($data_type == 'unknown') {
             return $this;
         }
 
         // If this is a Root Catalog, do not display anything
-        if($data_type == 'category') {
+        if ($data_type == 'category') {
             $category = Mage::getModel('catalog/category')->load($data_id);
-            if($category->getParentId() == 1) {
+            if ($category->getParentId() == 1) {
                 return $this;
             }
         }
@@ -122,53 +122,53 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         $fromLang = $observer->getEvent()->getFrom();
         $toLang = $observer->getEvent()->getTo();
 
-        $translationFolder =  Mage::getSingleton('core/design_package')->getBaseDir(
+        $translationFolder = Mage::getSingleton('core/design_package')->getBaseDir(
             array('_area' => 'adminhtml', '_type' => 'translations')
         );
 
         $translationFiles = array(
-            'translate_'.$fromLang.'_'.$toLang.'.csv',
-            'translate_'.$toLang.'.csv',
-            $fromLang.'_'.$toLang.'.csv',
-            $toLang.'.csv',
+            'translate_' . $fromLang . '_' . $toLang . '.csv',
+            'translate_' . $toLang . '.csv',
+            $fromLang . '_' . $toLang . '.csv',
+            $toLang . '.csv',
         );
-    
-        foreach($translationFiles as $translationFile) {
-            if(file_exists($translationFolder.'/'.$translationFile)) {
-                $translationFile = $translationFolder.'/'.$translationFile;
+
+        foreach ($translationFiles as $translationFile) {
+            if (file_exists($translationFolder . '/' . $translationFile)) {
+                $translationFile = $translationFolder . '/' . $translationFile;
             } else {
                 $translationFile = null;
             }
         }
 
-        if(empty($translationFile)) {
+        if (empty($translationFile)) {
             return $this;
         }
 
         $translations = array();
         if (($handle = fopen($translationFile, 'r')) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
-                if(empty($data[0])) continue;
-                if(empty($data[1])) continue;
+                if (empty($data[0])) continue;
+                if (empty($data[1])) continue;
                 $translations[$data[0]] = $data[1];
             }
         }
         fclose($handle);
 
-        foreach($translations as $translationFrom => $translationTo) {
+        foreach ($translations as $translationFrom => $translationTo) {
             $text = str_replace($translationFrom, $translationTo, $text);
         }
 
-        $observer->getEvent()->setData('text', $text); 
+        $observer->getEvent()->setData('text', $text);
         return $this;
     }
 
     public function coreBlockAbstractPrepareLayoutBefore($observer)
     {
         $block = $observer->getEvent()->getBlock();
-        if(get_class($block) =='Mage_Adminhtml_Block_Widget_Grid_Massaction'
-            && $block->getRequest()->getControllerName() == 'catalog_product')
-        {
+        $blockClass = 'Mage_Adminhtml_Block_Widget_Grid_Massaction';
+
+        if ($block instanceof $blockClass && $block->getRequest()->getControllerName() == 'catalog_product') {
             $block->addItem('googletranslate', array(
                 'label' => 'Translate via GoogleTranslate',
                 'url' => Mage::helper('adminhtml')->getUrl('googletranslate/index/batch', array('type' => 'product')),
