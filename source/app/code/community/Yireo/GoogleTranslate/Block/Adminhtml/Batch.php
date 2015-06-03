@@ -60,6 +60,22 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
     }
 
     /**
+     * Return the number of items
+     *
+     * @return mixed
+     */
+    public function getItemCount()
+    {
+        static $itemCount = null;
+
+        if (!is_numeric($itemCount)) {
+            $itemCount = $this->getItems()->getSize();
+        }
+
+        return $itemCount;
+    }
+
+    /**
      * @return Mage_Catalog_Model_Resource_Product_Collection
      */
     public function getItems()
@@ -71,8 +87,11 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
             $type = $this->getRequest()->getParam('type');
             if ($type == 'product') {
                 $this->_items = Mage::getModel('catalog/product')->getCollection()
-                    ->addAttributeToSelect(array('name', 'sku'))
-                    ->addAttributeToFilter('entity_id', array('IN' => $itemIds));
+                    ->addAttributeToSelect(array('name', 'sku'));
+
+                if (!empty($itemIds)) {
+                    $this->_items->addAttributeToFilter('entity_id', array('IN' => $itemIds));
+                }
             }
         }
 

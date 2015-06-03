@@ -13,7 +13,7 @@
 
     <modules>
         <Yireo_GoogleTranslate>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </Yireo_GoogleTranslate>
     </modules>
 
@@ -137,6 +137,7 @@
                 <logging>0</logging>
                 <widget_fixed>1</widget_fixed>
                 <jquery>1</jquery>
+                <batch_max_items>1000</batch_max_items>
             </googletranslate>
         </catalog>
     </default>
