@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class Yireo_GoogleTranslate_Model_System_Config_Source_Attribute
+ */
 class Yireo_GoogleTranslate_Model_System_Config_Source_Attribute
 {
     protected $_options;

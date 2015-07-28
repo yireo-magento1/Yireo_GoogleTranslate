@@ -17,3 +17,19 @@ div.googletranslate-widget div {
     float: left;
     padding: 10px;
 }
+
+div.googletranslate-container {
+    position: relative;
+}
+
+div.googletranslate-container a {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    width: 15px;
+}
+
+div.googletranslate-icon {
+    background: transparent url("../images/googletranslate/icon-language.png") no-repeat top left;
+}

@@ -97,13 +97,10 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
             $fromLang = null;
         }
 
-        // Fetch the API-settings
-        $clientId = Mage::helper('googletranslate')->getClientId();
-        $clientSecret = Mage::helper('googletranslate')->getClientSecret();
-
-        // Check for the API-key or client-ID plus client-secret
-        if (Mage::helper('googletranslate')->hasApiSettings() == false) {
-            return $this->sendError($this->__('No API-details configured yet'));
+        // Check for the API-key
+        $apiKey = Mage::helper('googletranslate')->getApiKey2();
+        if (empty($apiKey)) {
+            return $this->sendError($this->__('No API key'));
         }
 
         // Set these variables for use with the translator
@@ -111,8 +108,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         $translator->setData('text', $string);
         $translator->setData('fromLang', $fromLang);
         $translator->setData('toLang', $toLang);
-        $translator->setData('clientId', $clientId);
-        $translator->setData('clientSecret', $clientSecret);
+        $translator->setData('apiKey', $apiKey);
 
         // Load the correct data-model
         $translator = $this->getTranslator();
