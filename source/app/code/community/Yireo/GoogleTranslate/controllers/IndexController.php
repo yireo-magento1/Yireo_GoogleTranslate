@@ -319,8 +319,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Method to call upon the API
      *
-     * @access protected
-     * @param null
      * @return string
      */
     protected function translate()
@@ -338,9 +336,8 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Helper method to send a success
      *
-     * @access protected
      * @param string $message
-     * @return null
+     * @return boolean
      */
     protected function sendMessage($message = null)
     {
@@ -352,9 +349,8 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Helper method to send a specific error
      *
-     * @access protected
      * @param string $message
-     * @return mixed
+     * @return boolean
      */
     protected function sendError($message = null)
     {
@@ -366,15 +362,14 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Helper method to send the translation
      *
-     * @access protected
      * @param string $translation
-     * @return mixed
+     * @return boolean
      */
     protected function sendTranslation($translation = null)
     {
         $result = array('translation' => $translation);
         $this->sendJsonResponse($result);
-        return null;
+        return true;
     }
 
 

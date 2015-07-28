@@ -16,7 +16,6 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
     /**
      * Listen to the event core_block_abstract_to_html_before
      *
-     * @access public
      * @parameter Varien_Event_Observer $observer
      * @return $this
      */
@@ -99,7 +98,6 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
     /**
      * Method fired on the event <controller_action_predispatch>
      *
-     * @access public
      * @param Varien_Event_Observer $observer
      * @return Yireo_GoogleTranslate_Model_Observer
      */
@@ -112,7 +110,6 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
     /**
      * Method fired on the event <content_translate_after>
      *
-     * @access public
      * @param Varien_Event_Observer $observer
      * @return Yireo_GoogleTranslate_Model_Observer
      */

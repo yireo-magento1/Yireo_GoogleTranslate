@@ -1,7 +1,7 @@
 /**
- * Yireo BingTranslate for Magento
+ * Yireo GoogleTranslate for Magento
  *
- * @package     Yireo_BingTranslate
+ * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
  * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
@@ -9,14 +9,14 @@
 
 jQuery(function () {
     jQuery("input").each(function () {
-        YireoBingTranslate.addButtonToInput(jQuery(this));
+        YireoGoogleTranslate.addButtonToInput(jQuery(this));
     });
 });
 
 /**
- * YireoBingTranslate class
+ * YireoGoogleTranslate class
  */
-var YireoBingTranslate = {
+var YireoGoogleTranslate = {
 
     ajaxEntityBaseUrl: null,
 
@@ -33,8 +33,8 @@ var YireoBingTranslate = {
     translateText: function (html_id, from_language, to_language) {
 
         // Fetch the from_language and to_language if not yet set
-        var new_from_language = $('bingtranslate_source_language').value;
-        var new_to_language = $('bingtranslate_destination_language').value;
+        var new_from_language = $('googletranslate_source_language').value;
+        var new_to_language = $('googletranslate_destination_language').value;
 
         if (new_from_language && new_from_language != 'auto') {
             var from_language = new_from_language;
@@ -62,8 +62,8 @@ var YireoBingTranslate = {
     translateAttribute: function (data_id, attribute_code, html_id, store_id, from_language, to_language) {
 
         // Fetch the from_language and to_language if not yet set
-        var new_from_language = $('bingtranslate_source_language').value;
-        var new_to_language = $('bingtranslate_destination_language').value;
+        var new_from_language = $('googletranslate_source_language').value;
+        var new_to_language = $('googletranslate_destination_language').value;
 
         if (new_from_language && new_from_language != 'auto') {
             var from_language = new_from_language;
@@ -74,7 +74,7 @@ var YireoBingTranslate = {
         }
 
         // Define variables
-        var button = $('bingtranslate_button_' + attribute_code);
+        var button = $('googletranslate_button_' + attribute_code);
         var ajaxUrl = this.ajaxEntityBaseUrl
                 + 'id/' + data_id + '/'
                 + 'attribute/' + attribute_code + '/'
@@ -135,7 +135,7 @@ var YireoBingTranslate = {
 
             // General failure
             onFailure: function () {
-                alert('Failed to contact BingTranslate')
+                alert('Failed to contact GoogleTranslate')
             }
         });
     },
@@ -171,10 +171,10 @@ var YireoBingTranslate = {
         }
 
         var parent = input.parent();
-        var html = '<div class="bingtranslate-container">'
+        var html = '<div class="googletranslate-container">'
             + input.prop('outerHTML')
-            + '<a href="#" title="BingTranslate" onclick="javascript:YireoBingTranslate.translateText(\'' + inputId + '\'); return false;">'
-            + '<div class="bingtranslate-icon">'
+            + '<a href="#" title="GoogleTranslate" onclick="javascript:YireoGoogleTranslate.translateText(\'' + inputId + '\'); return false;">'
+            + '<div class="googletranslate-icon">'
             + '&nbsp;'
             + '</div>'
             + '</a>'

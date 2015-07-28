@@ -40,10 +40,23 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      * @param string $text
      * @param string $fromLang
      * @param string $toLang
-     * @return text
+     * @return string
      */
     public function translate($text = null, $fromLang = null, $toLang = null)
     {
+        // Load text from data-object
+        $text = trim($text);
+        if (empty($text)) {
+            $text = $this->getData('text');
+        }
+
+        // Return empty text
+        $text = trim($text);
+        if (empty($text)) {
+            $this->apiError = $this->__('Empty text in translation request');
+            return false;
+        }
+
         // Disable translating
         if (Mage::getStoreConfig('catalog/googletranslate/skip_translation')) {
             $this->apiError = $this->__('API-translation is disabled through setting');
@@ -64,9 +77,17 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         }
 
         // Load some variables
-        if (empty($text)) $text = $this->getData('text');
-        if (empty($fromLang)) $fromLang = $this->getData('fromLang');
-        if (empty($toLang)) $toLang = $this->getData('toLang');
+        if (empty($text)) {
+            $text = $this->getData('text');
+        }
+
+        if (empty($fromLang)) {
+            $fromLang = $this->getData('from');
+        }
+
+        if (empty($toLang)) {
+            $toLang = $this->getData('toLang');
+        }
 
         // Exception when toLang is wrong
         if (empty($toLang) || $toLang == 'auto') {
@@ -198,7 +219,6 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
     /**
      * Method to return the API error, if any
      *
-     * @return null
      */
     public function getApiError()
     {
@@ -218,7 +238,6 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
     /**
      * Method to write some debugging to a log
      *
-     * @access public
      * @param $string
      * @param $fromLang
      * @param $toLang
@@ -226,9 +245,13 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      */
     public function debugLog($string, $fromLang, $toLang)
     {
-        if (!is_dir(BP . DS . 'var' . DS . 'log')) @mkdir(BP . DS . 'var' . DS . 'log');
+        if (!is_dir(BP . DS . 'var' . DS . 'log')) {
+            mkdir(BP . DS . 'var' . DS . 'log');
+        }
+        
         $tmp_file = BP . DS . 'var' . DS . 'log' . DS . 'googletranslate.log';
         $tmp_string = $this->__('Translating from %s to %s', $fromLang, $toLang);
+        
         file_put_contents($tmp_file, $tmp_string . "\n", FILE_APPEND);
         file_put_contents($tmp_file, $string . "\n", FILE_APPEND);
     }
@@ -237,8 +260,8 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
      * Method to translate a certain text
      *
      * @param $string
-     * @param null $variable1
-     * @param null $variable2
+     *  $variable1
+     *  $variable2
      * @return string
      */
     public function __($string, $variable1 = null, $variable2 = null)
@@ -249,7 +272,6 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
     /**
      * Method to borkify a given text
      *
-     * @access public
      * @param $text
      * @return mixed|string
      */
@@ -264,7 +286,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
                 continue;
             }
 
-            $orgtext = $text;
+            $originalText = $text;
             $searchMap = array(
                 '/au/', '/\Bu/', '/\Btion/', '/an/', '/a\B/', '/en\b/',
                 '/\Bew/', '/\Bf/', '/\Bir/', '/\Bi/', '/\bo/', '/ow/', '/ph/',
@@ -277,11 +299,13 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
             );
 
             $text = preg_replace($searchMap, $replaceMap, $text);
-            if ($orgtext == $text && count($newTextBlocks)) {
+            if ($originalText == $text && count($newTextBlocks)) {
                 $text .= '-a';
             }
 
-            if (empty($text)) $text = $orgText;
+            if (empty($text)) {
+                $text = $originalText;
+            }
 
             $newTextBlocks[] = (string)$text;
         }

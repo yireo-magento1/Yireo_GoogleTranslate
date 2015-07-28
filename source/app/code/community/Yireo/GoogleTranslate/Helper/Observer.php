@@ -16,7 +16,6 @@ class Yireo_GoogleTranslate_Helper_Observer extends Mage_Core_Helper_Abstract
     /**
      * Helper method to fetch the button-HTML
      *
-     * @access public
      * @param int $id
      * @param string $label
      * @param bool $disabled
@@ -40,7 +39,7 @@ class Yireo_GoogleTranslate_Helper_Observer extends Mage_Core_Helper_Abstract
                 'class' => ($disabled) ? 'googletranslate_button disabled' : 'googletranslate_button',
                 'style' => 'margin-right:5px;margin-top:5px;',
                 'id' => 'googletranslate_button_' . $id,
-                'onclick' => 'googletranslate(' . implode(',', $jsArgs) . ')'
+                'onclick' => 'YireoGoogleTranslate.translateAttribute(' . implode(',', $jsArgs) . ')'
             ))->toHtml();
 
         return $html;
@@ -49,7 +48,6 @@ class Yireo_GoogleTranslate_Helper_Observer extends Mage_Core_Helper_Abstract
     /**
      * Helper method to fetch the button-HTML
      *
-     * @access public
      * @param string $attribute_code
      * @param string $html_id
      * @return string

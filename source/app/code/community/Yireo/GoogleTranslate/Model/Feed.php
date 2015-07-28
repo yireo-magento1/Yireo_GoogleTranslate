@@ -8,7 +8,7 @@
  * @license Open Source License (OSL v3) (OSL)
  * @link http://www.yireo.com
  */
-/*
+/**
  * Feed Model
  */
 
