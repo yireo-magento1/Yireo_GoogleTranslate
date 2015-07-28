@@ -26,7 +26,6 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
     /**
      * Return a specific URL
      *
-     * @access public
      * @param string $route
      * @param array $params
      * @return string
@@ -39,8 +38,6 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
     /**
      * Return the configured API key version 2
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getApiKey2()
@@ -48,15 +45,24 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
         return Mage::helper('googletranslate')->getApiKey2();
     }
 
+
     /**
-     * Return the configured API key
+     * Get the AJAX base URL for translating entities
      *
-     * @access public
-     * @param null
      * @return string
      */
-    public function getAjaxUrl()
+    public function getAjaxEntityBaseUrl()
     {
         return $this->getUrl('googletranslate/index/' . $this->getPageType());
+    }
+
+    /**
+     * Get the AJAX base URL for translating strings
+     *
+     * @return string
+     */
+    public function getAjaxTextBaseUrl()
+    {
+        return $this->getUrl('googletranslate/index/text');
     }
 }

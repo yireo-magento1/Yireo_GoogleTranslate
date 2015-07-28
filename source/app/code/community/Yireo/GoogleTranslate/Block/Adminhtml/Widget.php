@@ -26,8 +26,6 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
     /**
      * Return the current source-language
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getSourceLanguage()
@@ -38,20 +36,22 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
     /**
      * Return the current destination-language
      *
-     * @access public
-     * @param null
+     * @param bool $stripped
      * @return string
      */
-    public function getDestinationLanguage()
+    public function getDestinationLanguage($stripped = true)
     {
-        return Mage::helper('googletranslate')->getToLanguage();
+        $code = Mage::helper('googletranslate')->getToLanguage();
+        if ($stripped) {
+            return preg_replace('/\-(.*)$/', '', $code);
+        } else {
+            return $code;
+        }
     }
 
     /**
      * Return a list of languages
      *
-     * @access public
-     * @param null
      * @return array
      */
     public function getLanguages()
@@ -82,6 +82,8 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Widget extends Mage_Core_Block_Templ
     }
 
     /**
+     * Get a listing of store languages
+     *
      * @return array
      */
     public function getStoreLanguages()

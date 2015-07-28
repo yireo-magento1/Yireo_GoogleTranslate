@@ -19,8 +19,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Common method
      *
-     * @access protected
-     * @param null
      * @return Yireo_GoogleTranslate_IndexController
      */
     protected function _initAction()
@@ -35,10 +33,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
     /**
      * Batch page
-     *
-     * @access public
-     * @param null
-     * @return null
      */
     public function batchAction()
     {
@@ -49,10 +43,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
 
     /**
      * Translate a specific product
-     *
-     * @access public
-     * @param null
-     * @return null
      */
     public function translateProductAction()
     {
@@ -79,10 +69,63 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
+     * AJAX callback for regular text
+     *
+     * @return mixed
+     */
+    public function textAction()
+    {
+        $string = $this->getRequest()->getParam('string');
+        $fromLang = $this->getRequest()->getParam('from');
+        $toLang = $this->getRequest()->getParam('to');
+
+        // Sanity checks
+        if (empty($string)) {
+            return $this->sendError($this->__('No text value given'));
+        }
+
+        if (empty($fromLang)) {
+            return $this->sendError($this->__('No value for parameter from'));
+        }
+
+        if (empty($toLang)) {
+            return $this->sendError($this->__('No value for parameter to'));
+        }
+
+        // Set the source language to empty, if it is the same as the destination language
+        if ($fromLang == $toLang) {
+            $fromLang = null;
+        }
+
+        // Fetch the API-settings
+        $clientId = Mage::helper('googletranslate')->getClientId();
+        $clientSecret = Mage::helper('googletranslate')->getClientSecret();
+
+        // Check for the API-key or client-ID plus client-secret
+        if (Mage::helper('googletranslate')->hasApiSettings() == false) {
+            return $this->sendError($this->__('No API-details configured yet'));
+        }
+
+        // Set these variables for use with the translator
+        $translator = $this->getTranslator();
+        $translator->setData('text', $string);
+        $translator->setData('fromLang', $fromLang);
+        $translator->setData('toLang', $toLang);
+        $translator->setData('clientId', $clientId);
+        $translator->setData('clientSecret', $clientSecret);
+
+        // Load the correct data-model
+        $translator = $this->getTranslator();
+        $translator->setData('text', $string);
+
+        // Make the request to the API
+        $this->translate();
+        return null;
+    }
+
+    /**
      * AJAX callback for products
      *
-     * @access public
-     * @param null
      * @return mixed
      */
     public function productAction()
@@ -105,9 +148,11 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
         // Load the attribute-value
         $attribute = $translator->getData('attribute');
         $text = $product->getData($attribute);
+
         if (empty($text)) {
             return $this->sendError($this->__('No product-data found for attribute %s', $attribute));
         }
+
         $translator->setData('text', $text);
 
         // Make the request to the API
@@ -118,8 +163,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * AJAX callback for categories
      *
-     * @access public
-     * @param null
      * @return mixed
      */
     public function categoryAction()
@@ -156,8 +199,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * AJAX callback for CMS-pages
      *
-     * @access public
-     * @param null
      * @return mixed
      */
     public function pageAction()
@@ -193,8 +234,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * AJAX callback for CMS-blocks
      *
-     * @access public
-     * @param null
      * @return mixed
      */
     public function blockAction()
@@ -229,8 +268,6 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     /**
      * Perform some sanity checks
      *
-     * @access protected
-     * @param null
      * @return mixed
      */
     protected function preload()
@@ -284,7 +321,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access protected
      * @param null
-     * @return null
+     * @return string
      */
     protected function translate()
     {
@@ -308,7 +345,7 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
     protected function sendMessage($message = null)
     {
         $result = array('message' => $message);
-        echo json_encode($result);
+        $this->sendJsonResponse($result);
         return true;
     }
 
@@ -317,12 +354,12 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access protected
      * @param string $message
-     * @return null
+     * @return mixed
      */
     protected function sendError($message = null)
     {
         $result = array('error' => $message);
-        echo json_encode($result);
+        $this->sendJsonResponse($result);
         return false;
     }
 
@@ -331,13 +368,27 @@ class Yireo_GoogleTranslate_IndexController extends Mage_Adminhtml_Controller_Ac
      *
      * @access protected
      * @param string $translation
-     * @return null
+     * @return mixed
      */
     protected function sendTranslation($translation = null)
     {
         $result = array('translation' => $translation);
-        echo json_encode($result);
-        return;
+        $this->sendJsonResponse($result);
+        return null;
+    }
+
+
+    /**
+     * Helper method to send the JSON headers
+     *
+     * @params array $data
+     */
+    protected function sendJsonResponse($data)
+    {
+        $jsonData = Mage::helper('core')->jsonEncode($data);
+
+        $this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
+        $this->getResponse()->setBody($jsonData);
     }
 }
 

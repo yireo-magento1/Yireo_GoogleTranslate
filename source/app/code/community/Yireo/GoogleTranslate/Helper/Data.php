@@ -16,8 +16,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Switch to determine whether the extension is enabled or not
      *
-     * @param null
-     *
      * @return boolean
      */
     public function enabled()
@@ -54,8 +52,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Check whether the API-details are configured
      *
-     * @param null
-     *
      * @return string
      */
     public function hasApiSettings()
@@ -72,8 +68,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the API-key
      *
-     * @param null
-     *
      * @return string
      */
     public function getApiKey2()
@@ -84,8 +78,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the customization ID
      *
-     * @param null
-     *
      * @return string
      */
     public function getCustomizationId()
@@ -95,8 +87,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Return the text of the button label
-     *
-     * @param null
      *
      * @return string
      */
@@ -112,8 +102,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the source language
      *
-     * @param null
-     *
      * @return string
      */
     public function getFromLanguage()
@@ -126,8 +114,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the title of the source language
      *
-     * @param null
-     *
      * @return string
      */
     public function getFromTitle()
@@ -139,8 +125,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Return the destination language
-     *
-     * @param null
      *
      * @return string
      */
@@ -172,8 +156,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Return the title of the destination language
-     *
-     * @param null
      *
      * @return string
      */
@@ -242,8 +224,6 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Return the title of the destination language
-     *
-     * @param null
      *
      * @return string
      */

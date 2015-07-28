@@ -14,22 +14,30 @@
 class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Template
 {
     /**
-     * @var
+     * Listing of items
+     *
+     * @var array
      */
     protected $_items;
 
     /**
-     * @var
+     * Listing of numerical IDs for items
+     *
+     * @var array
      */
     protected $_itemIds;
 
     /**
-     * @var
+     * Listing of Store Views
+     *
+     * @var array
      */
     protected $_storeViews;
 
     /**
-     * @var
+     * Listing of attributes
+     *
+     * @var array
      */
     protected $_attributes;
 
