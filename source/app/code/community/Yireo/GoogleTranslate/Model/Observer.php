@@ -168,7 +168,7 @@ class Yireo_GoogleTranslate_Model_Observer extends Yireo_GoogleTranslate_Model_O
         if ($block instanceof $blockClass && $block->getRequest()->getControllerName() == 'catalog_product') {
             $block->addItem('googletranslate', array(
                 'label' => 'Translate via GoogleTranslate',
-                'url' => Mage::helper('adminhtml')->getUrl('googletranslate/index/batch', array('type' => 'product')),
+                'url' => Mage::helper('adminhtml')->getUrl('adminhtml/googletranslate/batch', array('type' => 'product')),
             ));
         }
     }

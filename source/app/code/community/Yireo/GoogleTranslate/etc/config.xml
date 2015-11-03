@@ -13,7 +13,7 @@
 
     <modules>
         <Yireo_GoogleTranslate>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
         </Yireo_GoogleTranslate>
     </modules>
 
@@ -117,13 +117,13 @@
 
     <admin>
         <routers>
-            <googletranslate>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Yireo_GoogleTranslate</module>
-                    <frontName>googletranslate</frontName>
+                    <modules>
+                        <googletranslate before="Mage_Adminhtml">Yireo_GoogleTranslate</googletranslate>
+                    </modules>
                 </args>
-            </googletranslate>
+            </adminhtml>
         </routers>
     </admin>
 

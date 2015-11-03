@@ -53,7 +53,7 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
      */
     public function getAjaxEntityBaseUrl()
     {
-        return $this->getUrl('googletranslate/index/' . $this->getPageType());
+        return $this->getUrl('adminhtml/googletranslate/' . $this->getPageType());
     }
 
     /**
@@ -63,6 +63,6 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Script extends Mage_Core_Block_Templ
      */
     public function getAjaxTextBaseUrl()
     {
-        return $this->getUrl('googletranslate/index/text');
+        return $this->getUrl('adminhtml/googletranslate/text');
     }
 }
