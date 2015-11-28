@@ -42,7 +42,7 @@
         </reference>
     </googletranslate_load>
 
-    <googletranslate_index_batch>
+    <adminhtml_googletranslate_batch>
         <reference name="head">
             <action method="addItem"><type>skin_css</type><name>css/googletranslate/jquery-ui.min.css</name></action>
             <action method="addItem"><type>skin_css</type><name>css/googletranslate/jquery-ui.theme.css</name></action>
@@ -50,7 +50,7 @@
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery.js</name></action>
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-noconflict.js</name></action>
             <action method="addItem"><type>skin_js</type><name>js/googletranslate/jquery-ui.min.js</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/googletranslate/bingtranslate.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/googletranslate/googletranslate.js</name></action>
         </reference>
-    </googletranslate_index_batch>
+    </adminhtml_googletranslate_batch>
 </layout>
