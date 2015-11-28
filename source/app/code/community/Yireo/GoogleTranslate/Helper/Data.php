@@ -60,12 +60,16 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function hasApiSettings()
     {
-        $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        $bork = Mage::getStoreConfig('catalog/googletranslate/bork');
+        if(Mage::getStoreConfig('catalog/bingtranslate/bork')) {
+            return true;
+        }
 
-        if (empty($apiKey) && empty($bork)) {
+        $apiKey = Mage::helper('googletranslate')->getApiKey2();
+
+        if (empty($apiKey)) {
             return false;
         }
+
         return true;
     }
 

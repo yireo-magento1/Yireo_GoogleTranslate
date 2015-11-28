@@ -97,10 +97,10 @@ class Yireo_GoogleTranslate_GoogletranslateController extends Mage_Adminhtml_Con
             $fromLang = null;
         }
 
-        // Check for the API-key
-        $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        if (empty($apiKey)) {
-            return $this->sendError($this->__('No API key'));
+        // Check for enabled 
+        $enabled = Mage::helper('googletranslate')->enabled();
+        if ($enabled == false) {
+            return $this->sendError($this->__('Not enabled'));
         }
 
         // Set these variables for use with the translator
@@ -284,10 +284,10 @@ class Yireo_GoogleTranslate_GoogletranslateController extends Mage_Adminhtml_Con
             $fromLang = null;
         }
 
-        // Check for the API-key
-        $apiKey = Mage::helper('googletranslate')->getApiKey2();
-        if (empty($apiKey)) {
-            return $this->sendError($this->__('No API key'));
+        // Check for enabled
+        $enabled = Mage::helper('googletranslate')->enabled();
+        if (empty($enabled)) {
+            return $this->sendError($this->__('Not enabled'));
         }
 
         // Set these variables for use with the translator
@@ -297,7 +297,7 @@ class Yireo_GoogleTranslate_GoogletranslateController extends Mage_Adminhtml_Con
         $translator->setData('fromLang', $fromLang);
         $translator->setData('toLang', $toLang);
         $translator->setData('store', $store);
-        $translator->setData('apiKey', $apiKey);
+        $translator->setData('apiKey', Mage::helper('googletranslate')->getApiKey2());
 
         return true;
     }
