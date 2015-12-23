@@ -77,7 +77,10 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
         static $itemCount = null;
 
         if (!is_numeric($itemCount)) {
-            $itemCount = $this->getItems()->getSize();
+            $items = $this->getItems();
+            if ($items) {
+                $itemCount = $items->getSize();
+            }
         }
 
         return $itemCount;
@@ -91,8 +94,8 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
         if (empty($this->_items)) {
 
             $itemIds = $this->getItemIds();
+            $type = $this->getRequest()->getParam('type', 'product');
 
-            $type = $this->getRequest()->getParam('type');
             if ($type == 'product') {
                 $this->_items = Mage::getModel('catalog/product')->getCollection()
                     ->addAttributeToSelect(array('name', 'sku'));
@@ -162,10 +165,13 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
         $attributes = $this->getAttributes();
 
         $data = array();
-        foreach ($items as $item) {
-            foreach ($storeViews as $storeView) {
-                foreach ($attributes as $attribute) {
-                    $data[] = $item->getId() . '|' . $storeView->getId() . '|' . $attribute->getAttributeCode();
+
+        if ($items) {
+            foreach ($items as $item) {
+                foreach ($storeViews as $storeView) {
+                    foreach ($attributes as $attribute) {
+                        $data[] = $item->getId() . '|' . $storeView->getId() . '|' . $attribute->getAttributeCode();
+                    }
                 }
             }
         }

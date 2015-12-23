@@ -30,11 +30,20 @@ var YireoGoogleTranslate = {
 
     debug : true,
 
+    getValueFromField: function (field) {
+        var fieldObject = $(field);
+        if (fieldObject) {
+            return fieldObject.value;
+        }
+
+        alert('Field "' + field + '" does not exist');
+    },
+
     translateText: function (html_id, from_language, to_language) {
 
         // Fetch the from_language and to_language if not yet set
-        var new_from_language = $('googletranslate_source_language').value;
-        var new_to_language = $('googletranslate_destination_language').value;
+        var new_from_language = this.getValueFromField('googletranslate_source_language');
+        var new_to_language = this.getValueFromField('googletranslate_destination_language');
 
         if (new_from_language && new_from_language != 'auto') {
             var from_language = new_from_language;
@@ -62,8 +71,8 @@ var YireoGoogleTranslate = {
     translateAttribute: function (data_id, attribute_code, html_id, store_id, from_language, to_language) {
 
         // Fetch the from_language and to_language if not yet set
-        var new_from_language = $('googletranslate_source_language').value;
-        var new_to_language = $('googletranslate_destination_language').value;
+        var new_from_language = this.getValueFromField('googletranslate_source_language');
+        var new_to_language = this.getValueFromField('googletranslate_destination_language');
 
         if (new_from_language && new_from_language != 'auto') {
             var from_language = new_from_language;
