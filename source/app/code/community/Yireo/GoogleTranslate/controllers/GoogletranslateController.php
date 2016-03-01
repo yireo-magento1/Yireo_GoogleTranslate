@@ -3,8 +3,8 @@
  * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
- * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -380,6 +380,16 @@ class Yireo_GoogleTranslate_GoogletranslateController extends Mage_Adminhtml_Con
 
         $this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
         $this->getResponse()->setBody($jsonData);
+    }
+
+    /**
+     * Allow ACL access
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/googletranslate');
     }
 }
 

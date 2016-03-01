@@ -3,8 +3,8 @@
  * Yireo GoogleTranslate for Magento
  *
  * @package     Yireo_GoogleTranslate
- * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -194,6 +194,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         if (isset($json['error']['errors'][0]['message'])) {
             $this->apiError = Mage::helper('googletranslate')->__('GoogleTranslate message: %s', var_export($json['error']['errors'][0]['message'], true));
             $this->apiError .= ' [' . Mage::helper('googletranslate')->__('From %s to %s', $fromLang, $toLang) . ']';
+            Mage::helper('googletranslate')->log('GoogleTranslate debug response', $result);
             return false;
         }
 

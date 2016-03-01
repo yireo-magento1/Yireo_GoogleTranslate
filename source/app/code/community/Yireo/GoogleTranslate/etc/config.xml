@@ -4,8 +4,8 @@
  * Yireo GoogleTranslate for Magento 
  *
  * @package     Yireo_GoogleTranslate
- * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
+ * @author      Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
@@ -13,7 +13,7 @@
 
     <modules>
         <Yireo_GoogleTranslate>
-            <version>3.1.3</version>
+            <version>3.1.4</version>
         </Yireo_GoogleTranslate>
     </modules>
 
@@ -98,6 +98,13 @@
             <resources>
                 <admin>
                     <children>
+                        <catalog>
+                            <children>
+                                <googletranslate translate="title" module="googletranslate">
+                                    <title>Translate via GoogleTranslate</title>
+                                </googletranslate>
+                            </children>
+                        </catalog>
                         <system>
                             <children>
                                 <config>
