@@ -26,7 +26,7 @@ var YireoGoogleTranslate = {
 
     skipInputNames : ['alias', 'publish_up', 'publish_down', 'created', 'created_by_alias', 'modified', 'hits',
         'id', 'xreference', 'metadata_author', 'metadata_xreference', 'images_image_intro', 'images_image_fulltext',
-        'treeselectfilter', 'params_cache_time', 'params_header_class', 'search'],
+        'treeselectfilter', 'params_cache_time', 'params_header_class', 'global_search'],
 
     debug : true,
 
