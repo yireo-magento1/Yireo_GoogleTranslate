@@ -1,0 +1,8 @@
+# Modman file
+source/app/code/community/Yireo/GoogleTranslate/                          app/code/community/Yireo/GoogleTranslate
+source/app/design/adminhtml/default/default/layout/googletranslate.xml    app/design/adminhtml/default/default/layout/googletranslate.xml
+source/app/design/adminhtml/default/default/template/googletranslate      app/design/adminhtml/default/default/template/googletranslate
+source/app/etc/modules/Yireo_GoogleTranslate.xml                          app/etc/modules/Yireo_GoogleTranslate.xml
+source/skin/adminhtml/default/default/js/googletranslate                  skin/adminhtml/default/default/js/googletranslate
+source/skin/adminhtml/default/default/css/googletranslate                 skin/adminhtml/default/default/css/googletranslate
+source/skin/adminhtml/default/default/images/googletranslate              skin/adminhtml/default/default/images/googletranslate
