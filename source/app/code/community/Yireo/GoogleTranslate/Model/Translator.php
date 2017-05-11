@@ -101,12 +101,18 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
         $apiKey = Mage::helper('googletranslate')->getApiKey2();
         $headers = array();
 
+        $text = trim($text);
+        $format = 'html';
+        if($text == strip_tags($text)) { 
+            $format = 'text';
+        }
+
         // Google API fields
         $post_fields = array(
             'key' => $apiKey,
             'target' => $toLang,
             'source' => $fromLang,
-            'format' => 'html',
+            'format' => $format,
             'prettyprint' => '1',
             'q' => $text,
         );
