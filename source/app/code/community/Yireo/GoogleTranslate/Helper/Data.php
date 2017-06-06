@@ -34,10 +34,10 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Log a message
      *
-     * @param type $message
-     * @param type $variable
+     * @param string $message
+     * @param mixed $variable
      *
-     * @return type
+     * @return bool
      */
     public function log($message, $variable = null)
     {
@@ -51,6 +51,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         Mage::log($message, null, 'googletranslate.log');
+        return true;
     }
 
     /**
@@ -184,6 +185,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStoreIdFromPageId($pageId)
     {
         if ($pageId > 0) {
+            /** @var Mage_Cms_Block_Page $page */
             $page = Mage::getModel('cms/page')->load($pageId);
             $storeIds = $page->getStoreId();
             if (is_array($storeIds) && count($storeIds) == 1) {
@@ -205,6 +207,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStoreIdFromBlockId($blockId)
     {
         if ($blockId > 0) {
+            /** @var Mage_Cms_Block_Block $block */
             $block = Mage::getModel('cms/block')->load($blockId);
             $storeIds = $block->getStoreId();
             if (is_array($storeIds) && count($storeIds) == 1) {
@@ -227,22 +230,27 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $locale = Mage::getStoreConfig('general/locale/code', $store);
         $language = preg_replace('/_(.*)/', '', $locale);
+
         return $language;
     }
 
     /**
      * Return the title of the destination language
      *
-     * @return string
+     * @return Mage_Core_Model_Store
      */
     public function getStoreByCode($code)
     {
         $stores = Mage::app()->getStores();
         foreach ($stores as $store) {
+            /** @var Mage_Core_Model_Store $store */
             if ($store->getCode() == $code) {
                 return $store;
             }
         }
-        return Mage::getModel('core/store');
+
+        /** @var Mage_Core_Model_Store $store */
+        $store = Mage::getModel('core/store');
+        return $store;
     }
 }

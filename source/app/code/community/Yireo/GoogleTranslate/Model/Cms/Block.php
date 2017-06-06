@@ -9,9 +9,9 @@
  */
 
 /**
- * GoogleTranslate Product-extension
+ * GoogleTranslate CMS Block
  */
-class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_Entity
+class Yireo_GoogleTranslate_Model_Cms_Block extends Yireo_GoogleTranslate_Model_Entity
 {
     /**
      * @var Mage_Catalog_Model_Product
@@ -24,12 +24,12 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
     protected $productResourceModel;
 
     /**
-     * Yireo_GoogleTranslate_Model_Product constructor.
+     * Yireo_GoogleTranslate_Model_Cms_Block constructor.
      */
     public function __construct()
     {
-        $this->productTarget = Mage::getModel('catalog/product');
-        $this->productResourceModel = Mage::getResourceModel('catalog/product');
+        $this->blockTarget = Mage::getModel('cms/block');
+        $this->blockResourceModel = Mage::getResourceModel('cms/block');
 
         parent::__construct();
     }
@@ -37,13 +37,13 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
     /**
      * Method to translate specific attributes of a specific product
      *
-     * @param Mage_Catalog_Model_Product $product
-     * @param array $productAttributes
+     * @param Mage_Cms_Block_Block $block
+     * @param array $blockAttributes
      * @param array $stores
      * @param int $delay
      * @param bool $allowTranslation
      */
-    public function translate(Mage_Catalog_Model_Product $product, $productAttributes, $stores, $delay = 0, $allowTranslation = null)
+    public function translate(Mage_Cms_Block_Block $block, $blockAttributes, $stores, $delay = 0, $allowTranslation = null)
     {
         // Reset some values
         $this->charCount = 0;
@@ -52,19 +52,19 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
             $this->allowTranslation = $allowTranslation;
         }
 
-        /** @var Mage_Catalog_Model_Product $product */
-        $product = $this->productTarget->load($product->getId());
+        /** @var Mage_Cms_Block_Block $block */
+        $block = $this->productTarget->load($block->getId());
 
         // Loop through the stores
         foreach ($stores as $store) {
 
             $store = $this->sanitizeStore($store);
-            $product->setStoreId($store->getId());
+            $block->setStoreId($store->getId());
 
-            $this->translateProductAttributes($product, $store, $productAttributes);
+            $this->translateBlockAttributes($block, $store, $blockAttributes);
 
             if ($this->allowTranslation === true) {
-                $product->save();
+                $block->save();
             }
 
             // Artificial sleep to give the API a rest
@@ -75,29 +75,29 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
     }
 
     /**
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Cms_Block_Block $block
      * @param Mage_Core_Model_Store $store
      * @param array $productAttributes
      */
-    protected function translateProductAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $productAttributes = [])
+    protected function translateBlockAttributes(Mage_Cms_Block_Block $block, Mage_Core_Model_Store $store, $productAttributes = [])
     {
         // Loop through the attributes
         foreach ($productAttributes as $productAttribute) {
-            $this->translateProductAttribute($product, $store, $productAttribute);
+            $this->translateProductAttribute($block, $store, $productAttribute);
         }
     }
 
     /**
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Cms_Block_Block $block
      * @param Mage_Core_Model_Store $store
      * @param $productAttribute
      *
      * @return bool
      */
-    protected function translateProductAttribute(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $productAttribute)
+    protected function translateProductAttribute(Mage_Cms_Block_Block $block, Mage_Core_Model_Store $store, $blockAttribute)
     {
         // Log
-        $log = $this->helper->__('Translating attribute "%s" of "%s" for store "%s"', $productAttribute, $product->getSku(), $store->getName());
+        $log = $this->helper->__('Translating attribute "%s" of "%s" for store "%s"', $blockAttribute, $block->getSku(), $store->getName());
         $this->helper->log($log);
 
         // Reset some values
@@ -106,8 +106,8 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
         $currentLanguage = $this->helper->getToLanguage($store);
 
         // Load both the global-value as the store-value
-        $parentValue = $this->productResourceModel->getAttributeRawValue($product->getId(), $productAttribute, Mage_Core_Model_App::ADMIN_STORE_ID);
-        $currentValue = $this->productResourceModel->getAttributeRawValue($product->getId(), $productAttribute, $store);
+        $parentValue = $this->productResourceModel->getAttributeRawValue($block->getId(), $productAttribute, Mage_Core_Model_App::ADMIN_STORE_ID);
+        $currentValue = $this->productResourceModel->getAttributeRawValue($block->getId(), $productAttribute, $store);
 
         // Sanity checks
         $parentValue = trim($parentValue);
@@ -138,7 +138,7 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
         // Detect API errors
         $apiError = $this->translator->getApiError();
         if (!empty($apiError)) {
-            $this->helper->log($this->helper->__('API-error for %s: %s', $product->getSku(), $apiError));
+            $this->helper->log($this->helper->__('API-error for %s: %s', $block->getSku(), $apiError));
             return false;
         }
 
@@ -148,8 +148,8 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
         }
 
         // Save values
-        $product->setData($productAttribute, $translatedValue);
-        $product->getResource()->saveAttribute($product, $productAttribute);
+        $block->setData($productAttribute, $translatedValue);
+        $block->getResource()->saveAttribute($block, $productAttribute);
 
         return true;
     }
