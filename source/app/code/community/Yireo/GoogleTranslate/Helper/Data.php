@@ -61,7 +61,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function hasApiSettings()
     {
-        if(Mage::getStoreConfig('catalog/bingtranslate/bork')) {
+        if(Mage::getStoreConfig('catalog/googletranslate/bork')) {
             return true;
         }
 

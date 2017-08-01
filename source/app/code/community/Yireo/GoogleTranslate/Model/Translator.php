@@ -35,7 +35,7 @@ class Yireo_GoogleTranslate_Model_Translator extends Mage_Core_Model_Abstract
     protected $apiTranslation = null;
 
     /**
-     * Method to call upon the Bing API
+     * Method to call upon the Google API
      *
      * @param string $text
      * @param string $fromLang

@@ -5,9 +5,44 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 -->
 <config>
+    <translate>
+        <modules>
+            <Yireo_GoogleTranslate>
+                <files>
+                    <default>Yireo_GoogleTranslate.csv</default>
+                </files>
+            </Yireo_GoogleTranslate>
+        </modules>
+    </translate>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <googletranslate translate="title" module="googletranslate">
+                                <title>Translate via GoogleTranslate</title>
+                            </googletranslate>
+                        </children>
+                    </catalog>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <googletranslate translate="title" module="googletranslate">
+                                        <title>GoogleTranslate Section</title>
+                                    </googletranslate>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
 </config>

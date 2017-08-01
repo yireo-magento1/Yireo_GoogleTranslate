@@ -19,7 +19,7 @@ abstract class Yireo_GoogleTranslate_Model_Entity
     protected $entity;
 
     /**
-     * @var Yireo_BingTranslate_Model_Translator
+     * @var Yireo_GoogleTranslate_Model_Translator
      */
     protected $translator;
 

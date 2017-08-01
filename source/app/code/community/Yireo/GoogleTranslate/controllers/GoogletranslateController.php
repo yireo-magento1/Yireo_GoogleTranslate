@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (https://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -19,7 +19,7 @@ class Yireo_GoogleTranslate_GoogletranslateController extends Mage_Adminhtml_Con
     /**
      * Common method
      *
-     * @return Yireo_GoogleTranslate_IndexController
+     * @return Yireo_GoogleTranslate_GoogletranslateController
      */
     protected function _initAction()
     {

@@ -4,14 +4,14 @@
  *
  * @author Yireo
  * @package Yireo_Common
- * @copyright Copyright 2015
+ * @copyright Copyright 2017
  * @license Open Source License (OSL v3) (OSL)
  * @link https://www.yireo.com
  */
+
 /**
  * Feed Model
  */
-
 class Yireo_GoogleTranslate_Model_Feed extends Mage_AdminNotification_Model_Feed
 {
     /**
