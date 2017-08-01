@@ -42,7 +42,7 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
     public function log($message, $variable = null)
     {
         $logging = (bool)Mage::getStoreConfig('catalog/googletranslate/logging');
-        if ($logging == false) {
+        if ($logging === false) {
             return false;
         }
 

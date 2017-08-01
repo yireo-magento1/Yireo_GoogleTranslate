@@ -9,12 +9,12 @@
  */
 
 /**
- * GoogleTranslate Product-extension
+ * GoogleTranslate Category model
  */
-class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_Entity
+class Yireo_GoogleTranslate_Model_Category extends Yireo_GoogleTranslate_Model_Entity
 {
     /**
-     * @var Mage_Catalog_Model_Product
+     * @var Mage_Catalog_Model_Category
      */
     protected $entity;
 
@@ -26,7 +26,7 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
      */
     protected function getStoreValue($attribute, $store)
     {
-        $currentValue = Mage::getResourceModel('catalog/product')->getAttributeRawValue($this->entity->getId(), $attribute, $store);
+        $currentValue = Mage::getResourceModel('catalog/category')->getAttributeRawValue($this->entity->getId(), $attribute, $store);
         return trim($currentValue);
     }
 
@@ -35,7 +35,7 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
      */
     protected function getEntityLabel()
     {
-        return $this->entity->getSku();
+        return $this->entity->getId();
     }
 
     /**
@@ -43,6 +43,6 @@ class Yireo_GoogleTranslate_Model_Product extends Yireo_GoogleTranslate_Model_En
      */
     protected function getEntityType()
     {
-        return 'product';
+        return 'category';
     }
 }
