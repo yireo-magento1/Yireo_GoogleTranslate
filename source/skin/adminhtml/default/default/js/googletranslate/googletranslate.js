@@ -7,11 +7,11 @@
  * @license     Open Source License (OSL v3)
  */
 
-jQuery(function () {
-    jQuery("input").each(function () {
-        YireoGoogleTranslate.addButtonToInput(jQuery(this));
+(function ($) {
+    $("input").each(function () {
+        YireoGoogleTranslate.addButtonToInput($(this));
     });
-});
+})(jQuery);
 
 /**
  * YireoGoogleTranslate class
