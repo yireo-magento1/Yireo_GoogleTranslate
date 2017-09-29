@@ -13,7 +13,7 @@
 
     <modules>
         <Yireo_GoogleTranslate>
-            <version>3.1.6</version>
+            <version>3.1.7</version>
         </Yireo_GoogleTranslate>
     </modules>
 
@@ -101,6 +101,7 @@
     <default>
         <catalog>
             <googletranslate>
+                <enabled>1</enabled>
                 <buttonlabel>GoogleTranslate from $FROM to $TO</buttonlabel>
                 <bork>0</bork>
                 <overwrite_existing>0</overwrite_existing>

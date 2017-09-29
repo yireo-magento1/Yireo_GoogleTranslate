@@ -20,6 +20,10 @@ class Yireo_GoogleTranslate_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function enabled()
     {
+        if ((bool)Mage::getStoreConfig('catalog/googletranslate/enabled') === false) {
+            return false;
+        }
+
         if ((bool)Mage::getStoreConfig('advanced/modules_disable_output/Yireo_GoogleTranslate')) {
             return false;
         }
