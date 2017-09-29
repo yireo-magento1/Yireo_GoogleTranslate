@@ -3,7 +3,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (https://www.yireo.com/)
- * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @copyright   Copyright 2017 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 
@@ -26,7 +26,7 @@ var YireoGoogleTranslate = {
 
     skipInputNames : ['alias', 'publish_up', 'publish_down', 'created', 'created_by_alias', 'modified', 'hits',
         'id', 'xreference', 'metadata_author', 'metadata_xreference', 'images_image_intro', 'images_image_fulltext',
-        'treeselectfilter', 'params_cache_time', 'params_header_class', 'global_search'],
+        'treeselectfilter', 'params_cache_time', 'params_header_class'],
 
     debug : true,
 
@@ -100,10 +100,10 @@ var YireoGoogleTranslate = {
             return false;
         }
 
-        this.ajax(ajaxUrl, field, button);
+        this.ajax(ajaxUrl, field, button, html_id);
     },
 
-    ajax: function (ajaxUrl, field) {
+    ajax: function (ajaxUrl, field, button, html_id) {
 
         // If all is right, perform an AJAX-request
         new Ajax.Request(ajaxUrl, {
