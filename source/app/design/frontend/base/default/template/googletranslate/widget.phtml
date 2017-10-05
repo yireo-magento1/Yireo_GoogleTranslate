@@ -4,7 +4,7 @@
  *
  * @package     Yireo_GoogleTranslate
  * @author      Yireo (http://www.yireo.com/)
- * @copyright   Copyright (C) 2014 Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (C) 2017 Yireo (http://www.yireo.com/)
  * @license     Open Source License (OSL v3)
  */
 ?>
@@ -12,13 +12,13 @@
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
-    <?php if($this->getIncludedLanguages(): ?>
+    <?php if($this->getIncludedLanguages()): ?>
     includedLanguages: '<?php echo implode(',', $this->getIncludedLanguages()); ?>', 
     <?php endif; ?>
-    <?php if($this->isMultilanguagePage(): ?>
+    <?php if($this->isMultilanguagePage()): ?>
     multilanguagePage: true,
     <?php endif; ?>
-    <?php if($this->getGaId(): ?>
+    <?php if($this->getGaId()): ?>
     gaTrack: true,
     gaId: '<?php echo $this->getGaId(); ?>',
     <?php endif; ?>
