@@ -64,6 +64,11 @@ class Yireo_GoogleTranslate_Block_Adminhtml_Batch extends Mage_Core_Block_Templa
         }
 
         if (empty($this->_itemIds)) {
+            $key = $this->getRequest()->getParam('product');
+            $this->_itemIds = $this->getRequest()->getParam($key);
+        }
+
+        if (empty($this->_itemIds)) {
             $type = $this->getRequest()->getParam('type');
             $this->_itemIds = $this->getRequest()->getParam($type);
         }
